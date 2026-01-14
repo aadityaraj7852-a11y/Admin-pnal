@@ -1,47 +1,27 @@
+import { CONFIG } from "../config.js";
+import { requireAdmin, logout } from "../auth.js";
+import { fetchAllLabels, fetchPostsByLabel, publishVideoPost } from "../blogger.js";
+
 const $ = (id) => document.getElementById(id);
 
 function toast(msg){
   const t = $("toast");
   t.textContent = msg;
   t.classList.add("show");
-  setTimeout(()=>t.classList.remove("show"), 2000);
+  setTimeout(()=>t.classList.remove("show"), 1800);
 }
 
 function setStatus(txt){
   $("statusTxt").textContent = txt;
 }
 
-/** ✅ Sidebar toggle fix */
-function setupSidebarToggle(){
-  const sidebar = $("sidebar");
-  const overlay = $("overlay");
-  const menuBtn  = $("menuBtn");
-
-  function open(){
-    sidebar.classList.add("open");
-    overlay.classList.add("show");
-  }
-  function close(){
-    sidebar.classList.remove("open");
-    overlay.classList.remove("show");
-  }
-
-  menuBtn.addEventListener("click", ()=>{
-    if(sidebar.classList.contains("open")) close();
-    else open();
-  });
-
-  overlay.addEventListener("click", close);
-}
-
-function normalizeYouTube(url){
+function normalizeYT(url){
   url = (url || "").trim();
   if(!url) return "";
 
-  // allow youtu.be / youtube.com
   if(!url.includes("youtu")) return "";
 
-  // convert shorts to watch
+  // shorts -> watch
   if(url.includes("/shorts/")){
     const id = url.split("/shorts/")[1]?.split(/[?&]/)[0];
     if(id) return `https://www.youtube.com/watch?v=${id}`;
@@ -56,225 +36,219 @@ function normalizeYouTube(url){
   return url;
 }
 
-function extractVideoId(url){
-  if(!url) return "";
-  try{
-    const u = new URL(url);
-    if(u.searchParams.get("v")) return u.searchParams.get("v");
-    // fallback
-    return "";
-  }catch(e){
-    return "";
-  }
+function setupSidebar(){
+  const sidebar = $("sidebar");
+  const overlay = $("overlay");
+  const btn = $("menuBtn");
+
+  btn.addEventListener("click", ()=>{
+    sidebar.classList.toggle("open");
+    overlay.classList.toggle("show");
+  });
+
+  overlay.addEventListener("click", ()=>{
+    sidebar.classList.remove("open");
+    overlay.classList.remove("show");
+  });
 }
 
-async function loadLabelsInto(selectEl){
-  // ✅ fallback labels from config
-  const base = window.CONFIG?.blogger?.labelsOrder || [];
+function fillSelect(sel, arr, defaultVal){
+  sel.innerHTML = "";
+  arr.forEach(x=>{
+    const opt = document.createElement("option");
+    opt.value = x;
+    opt.textContent = x;
+    sel.appendChild(opt);
+  });
+  if(defaultVal && arr.includes(defaultVal)) sel.value = defaultVal;
+}
 
-  // ✅ labels from blogger
+async function loadLabels(){
+  setStatus("Loading labels...");
   let labels = [];
+
+  // ✅ config वाले labels पहले
+  const base = CONFIG?.BLOGGER_LABEL_ORDER || [];
+  const baseSet = new Set(base);
+
   try{
-    labels = await window.BLOGGER.getAllLabelsSafe();
+    const fromApi = await fetchAllLabels();
+    labels = [...new Set([...base, ...(fromApi || [])])].filter(Boolean);
   }catch(e){
-    labels = [];
+    labels = [...baseSet];
   }
 
-  const merged = [...new Set([...base, ...labels])].filter(Boolean);
-
-  selectEl.innerHTML = "";
-
-  if(!merged.length){
-    const opt = document.createElement("option");
-    opt.value = window.CONFIG.blogger.labels.videos || "Videos";
-    opt.textContent = window.CONFIG.blogger.labels.videos || "Videos";
-    selectEl.appendChild(opt);
-    return;
+  if(!labels.length){
+    labels = ["Videos"];
   }
 
-  merged.forEach(l=>{
-    const opt = document.createElement("option");
-    opt.value = l;
-    opt.textContent = l;
-    selectEl.appendChild(opt);
-  });
-}
-
-async function promptNewLabel(){
-  const name = prompt("नया Label नाम लिखो:");
-  if(!name) return null;
-  return name.trim();
-}
-
-async function refreshList(){
-  setStatus("Loading...");
-  const label = $("filterLabelSel").value;
-  const search = ($("searchInp").value || "").toLowerCase();
-
-  const posts = await window.BLOGGER.getPostsByLabelSafe(label);
-
-  const list = (posts || [])
-    .filter(p => (p.title || "").toLowerCase().includes(search))
-    .slice(0, 30);
-
-  const box = $("listBox");
-  box.innerHTML = "";
-
-  if(!list.length){
-    box.innerHTML = `<div class="emptyTxt">No videos found</div>`;
-    setStatus("Ready");
-    return;
-  }
-
-  list.forEach(p=>{
-    const div = document.createElement("div");
-    div.className = "rowItem";
-    div.innerHTML = `
-      <div class="rowLeft">
-        <div class="rowTitle">${p.title || "-"}</div>
-        <div class="rowMeta">${new Date(p.published).toLocaleString("en-IN")}</div>
-      </div>
-      <div class="rowRight">
-        <button class="smallBtn" data-open="${p.url}">
-          <i class="fa-solid fa-up-right-from-square"></i> Open
-        </button>
-        <button class="smallBtn" data-copy="${p.url}">
-          <i class="fa-solid fa-copy"></i> Copy
-        </button>
-      </div>
-    `;
-    box.appendChild(div);
-  });
-
-  box.querySelectorAll("[data-open]").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      window.open(btn.getAttribute("data-open"), "_blank");
-    });
-  });
-
-  box.querySelectorAll("[data-copy]").forEach(btn=>{
-    btn.addEventListener("click", async ()=>{
-      await navigator.clipboard.writeText(btn.getAttribute("data-copy"));
-      toast("Copied");
-    });
-  });
+  // ✅ dropdowns
+  fillSelect($("labelSel"), labels, "Videos");
+  fillSelect($("filterLabelSel"), labels, "Videos");
 
   setStatus("Ready");
 }
 
+async function refreshList(){
+  const label = $("filterLabelSel").value;
+  const q = ($("searchInp").value || "").toLowerCase().trim();
+
+  setStatus("Loading...");
+  $("listBox").innerHTML = `<div class="emptyTxt">Loading...</div>`;
+
+  try{
+    const posts = await fetchPostsByLabel(label, 30);
+
+    const filtered = (posts || []).filter(p=>{
+      const t = (p.title || "").toLowerCase();
+      return !q || t.includes(q);
+    });
+
+    if(!filtered.length){
+      $("listBox").innerHTML = `<div class="emptyTxt">No videos found</div>`;
+      setStatus("Ready");
+      return;
+    }
+
+    $("listBox").innerHTML = "";
+
+    filtered.forEach(p=>{
+      const item = document.createElement("div");
+      item.className = "rowItem";
+
+      item.innerHTML = `
+        <div class="rowLeft">
+          <div class="rowTitle">${p.title || "-"}</div>
+          <div class="rowMeta">${new Date(p.published).toLocaleString("en-IN")}</div>
+        </div>
+        <div class="rowRight">
+          <button class="smallBtn" data-open="${p.url}">
+            <i class="fa-solid fa-up-right-from-square"></i> Open
+          </button>
+          <button class="smallBtn" data-copy="${p.url}">
+            <i class="fa-solid fa-copy"></i> Copy
+          </button>
+        </div>
+      `;
+
+      item.querySelector("[data-open]").addEventListener("click", ()=>{
+        window.open(p.url, "_blank");
+      });
+
+      item.querySelector("[data-copy]").addEventListener("click", async ()=>{
+        try{
+          await navigator.clipboard.writeText(p.url);
+          toast("Copied ✅");
+        }catch{
+          alert(p.url);
+        }
+      });
+
+      $("listBox").appendChild(item);
+    });
+
+    setStatus("Ready");
+  }catch(e){
+    console.log(e);
+    $("listBox").innerHTML = `<div class="emptyTxt">Load failed ❌</div>`;
+    setStatus("Failed");
+    toast("Load failed ❌");
+  }
+}
+
 async function main(){
-  setupSidebarToggle();
+  setupSidebar();
 
-  $("adminEmailTxt").textContent = window.CONFIG.admin.email;
+  $("adminEmailTxt").textContent = CONFIG.ADMIN_EMAIL;
 
-  $("logoutBtn").addEventListener("click", async ()=>{
-    await window.AUTH.logout();
-    location.href = "./index.html";
-  });
+  // ✅ logout (GitHub pages FIX)
+  $("logoutBtn").onclick = ()=>{
+    logout();
+    window.location.href = "./index.html";
+  };
 
-  // ✅ admin check
-  const ok = await window.AUTH.requireAdmin();
+  // ✅ admin guard
+  const ok = requireAdmin();
   if(!ok){
-    location.href = "./index.html";
+    window.location.href = "./index.html";
     return;
   }
 
-  // ✅ load labels
-  await loadLabelsInto($("labelSel"));
-  await loadLabelsInto($("filterLabelSel"));
+  await loadLabels();
+  await refreshList();
 
-  // default label to videos
-  const def = window.CONFIG.blogger.labels.videos || $("filterLabelSel").value;
-  $("filterLabelSel").value = def;
+  // ✅ create new label
+  $("newLabelBtn").addEventListener("click", ()=>{
+    const name = prompt("New Label name:");
+    if(!name) return;
+    const label = name.trim();
+    if(!label) return;
 
-  $("newLabelBtn").addEventListener("click", async ()=>{
-    const newLabel = await promptNewLabel();
-    if(!newLabel) return;
-
-    const addOpt = (sel)=>{
-      const exists = [...sel.options].some(o=>o.value===newLabel);
+    const add = (sel)=>{
+      const exists = [...sel.options].some(o=>o.value === label);
       if(!exists){
-        const opt=document.createElement("option");
-        opt.value=newLabel;
-        opt.textContent=newLabel;
+        const opt = document.createElement("option");
+        opt.value = label;
+        opt.textContent = label;
         sel.appendChild(opt);
       }
     };
 
-    addOpt($("labelSel"));
-    addOpt($("filterLabelSel"));
-    $("labelSel").value = newLabel;
+    add($("labelSel"));
+    add($("filterLabelSel"));
 
-    toast("Label ready");
+    $("labelSel").value = label;
+    toast("Label added ✅ अब Publish दबाओ");
   });
 
+  // ✅ clear
   $("clearBtn").addEventListener("click", ()=>{
     $("titleInp").value = "";
     $("ytInp").value = "";
-    toast("Cleared");
+    toast("Cleared ✅");
   });
 
+  // ✅ publish
   $("publishBtn").addEventListener("click", async ()=>{
     try{
       const title = ($("titleInp").value || "").trim();
       const label = $("labelSel").value;
-      let yt = normalizeYouTube($("ytInp").value);
+      const yt = normalizeYT($("ytInp").value);
 
-      if(!title){ toast("Title डाल"); return; }
-      if(!label){ toast("Label select कर"); return; }
-      if(!yt){ toast("Valid YouTube link डाल"); return; }
-
-      const vid = extractVideoId(yt);
+      if(!title) return toast("Title डाल");
+      if(!label) return toast("Label select कर");
+      if(!yt) return toast("Valid YouTube link डाल");
 
       setStatus("Publishing...");
 
-      const embed = vid
-        ? `<iframe width="100%" height="315" src="https://www.youtube.com/embed/${vid}" frameborder="0" allowfullscreen></iframe>`
-        : `<a href="${yt}" target="_blank">${yt}</a>`;
+      await publishVideoPost({ title, ytUrl: yt, label });
 
-      const html = `
-        <div style="font-family:Arial">
-          <h2>${title}</h2>
-          <div style="margin:10px 0">${embed}</div>
-          <p><a href="${yt}" target="_blank">Open on YouTube</a></p>
-        </div>
-      `;
+      toast("Published ✅");
+      setStatus("Done ✅");
 
-      // ✅ Blogger Post create
-      await window.BLOGGER.createPost({
-        title,
-        contentHTML: html,
-        labels: [label]
-      });
-
-      setStatus("Done");
-      toast("Published Successfully");
-
-      // reset
+      // reset + refresh
       $("titleInp").value = "";
       $("ytInp").value = "";
 
-      // refresh list
       $("filterLabelSel").value = label;
       await refreshList();
 
+      setStatus("Ready");
     }catch(e){
       console.log(e);
       setStatus("Failed");
-      toast("Publish Failed");
+      toast("Publish Failed ❌");
+      alert("Publish Failed ❌\n\nConsole में error देखो");
     }
   });
 
   $("refreshBtn").addEventListener("click", refreshList);
-
   $("filterLabelSel").addEventListener("change", refreshList);
 
   $("searchInp").addEventListener("input", ()=>{
-    clearTimeout(window.__srchT);
-    window.__srchT=setTimeout(refreshList, 250);
+    clearTimeout(window.__sr);
+    window.__sr = setTimeout(refreshList, 250);
   });
-
-  await refreshList();
 }
 
 main();
