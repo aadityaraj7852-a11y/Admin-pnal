@@ -19,17 +19,17 @@
 
 <div class="appShell">
 
-  <!-- ✅ Sidebar -->
+  <!-- Sidebar -->
   <aside class="side" id="sideBar">
     <div class="sideTop">
 
-      <!-- ✅ Brand -->
+      <!-- Brand -->
       <div class="brandClean">
         <div class="brandTitleBig">Mockrise</div>
         <div class="brandSubSmall">Admin Panel</div>
       </div>
 
-      <!-- ✅ Mini User -->
+      <!-- Mini User -->
       <div class="userMini">
         <div class="userMiniRow">
           <img class="userMiniPic" id="userPic" src="https://i.imgur.com/4M34hi2.png" alt="user">
@@ -53,8 +53,6 @@
           Admin: <b id="adminOnlyTxt">aadityaraj7852@gmail.com</b>
         </div>
       </div>
-
-      <!-- ✅ Search हटाया (पूरी तरह) -->
 
       <div class="sideSectionTitle">Menu</div>
 
@@ -95,7 +93,7 @@
         </a>
 
         <a class="labelBtn" href="./banner.html">
-          <span><i class="fa-regular fa-images"></i> Add Baners</span>
+          <span><i class="fa-regular fa-images"></i> Baners</span>
           <span class="badge" id="countBanner">0</span>
         </a>
       </div>
@@ -103,14 +101,14 @@
     </div>
 
     <div class="sideBottom">
-      Mockrise ✅
+      Mockrise
     </div>
   </aside>
 
-  <!-- ✅ Main -->
+  <!-- Main -->
   <main class="main">
 
-    <!-- ✅ CoprepEdu Style Header -->
+    <!-- Header -->
     <header class="cwHeader">
       <div class="cwLeft">
         <button class="cwIconBtn" id="toggleMenu" title="Menu">
@@ -119,7 +117,7 @@
 
         <div class="cwTitleWrap">
           <div class="cwTitle">Dashboard</div>
-          <div class="cwSub" id="statusTxt">Ready ✅</div>
+          <div class="cwSub" id="statusTxt">Ready</div>
         </div>
       </div>
 
@@ -134,14 +132,13 @@
       </div>
     </header>
 
-    <!-- ✅ Content -->
+    <!-- Content -->
     <section class="contentGrid">
 
-      <!-- ✅ HERO Banner (Playstore वाली जगह) -->
+      <!-- Website Card -->
       <div class="heroCard">
         <div class="heroText">
-          <div class="heroHeading">Welcome, Mockrise 👋</div>
-          <div class="heroPara">Website जल्दी open करो या copy करके share कर दो ✅</div>
+          <div class="heroHeading">Website</div>
 
           <div class="heroActions">
             <a class="heroBtnPrimary" id="openSiteBtn" href="https://mockrise.com" target="_blank">
@@ -160,20 +157,18 @@
 
         <div class="heroStats">
           <div class="heroStatBox">
-            <div class="heroStatLabel">Today</div>
-            <div class="heroStatValue">Live ✅</div>
+            <div class="heroStatLabel">Status</div>
+            <div class="heroStatValue">Live</div>
           </div>
         </div>
       </div>
 
-      <!-- ✅ Content Analytics -->
+      <!-- Analytics Card -->
       <div class="card">
         <div class="cardHead">
           <div>
-            <div class="cardTitle">📊 Content Analytics</div>
-            <div class="cardSub">Auto count (Blogger Labels)</div>
+            <div class="cardTitle">Content Analytics</div>
           </div>
-          <span class="pill">Auto ⚡</span>
         </div>
 
         <div class="statsGrid">
@@ -221,7 +216,7 @@
 </div>
 
 <script type="module">
-  // ✅ Sidebar toggle (mobile)
+  // Sidebar toggle (mobile)
   const sideBar = document.getElementById("sideBar");
   const overlay = document.getElementById("sideOverlay");
   const toggleMenu = document.getElementById("toggleMenu");
@@ -236,17 +231,17 @@
     overlay.classList.remove("show");
   });
 
-  // ✅ Top logout button => sidebar logout click
+  // Top logout => sidebar logout click
   document.getElementById("logoutTopBtn")?.addEventListener("click", ()=>{
     document.getElementById("logoutBtn")?.click();
   });
 
-  // ✅ Copy site
+  // Copy site
   document.getElementById("copySiteBtn")?.addEventListener("click", async ()=>{
     const url = document.getElementById("siteUrl")?.textContent?.trim() || "https://mockrise.com";
     try{
       await navigator.clipboard.writeText(url);
-      alert("✅ Website link copied!");
+      alert("Link copied");
     }catch(e){
       prompt("Copy this:", url);
     }
