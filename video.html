@@ -1,197 +1,213 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="hi">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Mockrise • Videos</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>Mockrise • Video Manager</title>
 
-  <link rel="stylesheet" href="./assets/css/base.css">
-  <link rel="stylesheet" href="./assets/css/sidebar.css">
-  <link rel="stylesheet" href="./assets/css/video.css">
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
 
+  <!-- Font Awesome (No emoji ✅) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="./assets/css/base.css" />
+  <link rel="stylesheet" href="./assets/css/sidebar.css" />
+  <link rel="stylesheet" href="./assets/css/video.css" />
 </head>
 
 <body>
-<div id="sideOverlay" class="sideOverlay"></div>
+  <!-- Mobile Topbar -->
+  <header class="topbar">
+    <button class="iconBtn" id="menuBtn" title="Menu">
+      <i class="fa-solid fa-bars"></i>
+    </button>
 
-<div class="appShell">
-
-  <!-- Sidebar -->
-  <aside id="sideBar" class="side">
-    <div class="sideTop">
-
-      <div class="sideSectionTitle">Menu</div>
-
-      <div class="labelsBox" id="menuBox">
-        <a class="labelBtn" href="./home.html">
-          <span><i class="fa-solid fa-gauge-high"></i> Dashboard</span>
-          <span class="badge">Home</span>
-        </a>
-
-        <a class="labelBtn labelBtnActive" href="./video.html">
-          <span><i class="fa-solid fa-video"></i> Videos</span>
-          <span class="badge">Now</span>
-        </a>
-
-        <a class="labelBtn" href="./pdf.html">
-          <span><i class="fa-solid fa-file-pdf"></i> Notes PDF</span>
-          <span class="badge">Go</span>
-        </a>
-
-        <a class="labelBtn" href="./weeklytest.html">
-          <span><i class="fa-solid fa-calendar-week"></i> Weekly Test</span>
-          <span class="badge">Go</span>
-        </a>
-
-        <a class="labelBtn" href="./quiz.html">
-          <span><i class="fa-solid fa-bolt"></i> Quiz</span>
-          <span class="badge">Go</span>
-        </a>
-
-        <a class="labelBtn" href="./ebook.html">
-          <span><i class="fa-solid fa-book"></i> E-book</span>
-          <span class="badge">Go</span>
-        </a>
-
-        <a class="labelBtn" href="./current-affairs.html">
-          <span><i class="fa-solid fa-newspaper"></i> Current Affairs</span>
-          <span class="badge">Go</span>
-        </a>
-
-        <a class="labelBtn" href="./banner.html">
-          <span><i class="fa-regular fa-images"></i> Baners</span>
-          <span class="badge">Go</span>
-        </a>
-      </div>
-
+    <div class="topbarTitle">
+      <div class="titleMain">Videos</div>
+      <div class="titleSub" id="statusTxt">Ready</div>
     </div>
 
-    <div class="sideBottom">Mockrise</div>
-  </aside>
+    <button class="iconBtn danger" id="logoutBtn" title="Logout">
+      <i class="fa-solid fa-right-from-bracket"></i>
+    </button>
+  </header>
 
-  <!-- Main -->
-  <main class="main">
+  <!-- Sidebar Overlay -->
+  <div class="overlay" id="overlay"></div>
 
-    <!-- Header -->
-    <header class="cwHeader">
-      <div class="cwLeft">
-        <button class="cwIconBtn" id="toggleMenu" title="Menu">
-          <i class="fa-solid fa-bars"></i>
-        </button>
-
-        <div class="cwTitleWrap">
-          <div class="cwTitle">Videos</div>
-          <div class="cwSubLive">
-            <i class="fa-solid fa-signal"></i>
-            <span>Live</span>
+  <!-- Layout -->
+  <div class="shell">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sbHeader">
+        <div class="sbBrand">
+          <div class="sbLogo"><i class="fa-solid fa-layer-group"></i></div>
+          <div>
+            <div class="sbName">Mockrise</div>
+            <div class="sbSub">Admin Panel</div>
           </div>
         </div>
       </div>
 
-      <div class="cwRight">
-        <button class="cwIconBtn danger" id="logoutTopBtn" title="Logout">
-          <i class="fa-solid fa-right-from-bracket"></i>
-        </button>
+      <nav class="sbMenu">
+        <a class="sbItem" href="./home.html">
+          <i class="fa-solid fa-gauge-high"></i>
+          <span>Dashboard</span>
+        </a>
+
+        <a class="sbItem active" href="./video.html">
+          <i class="fa-solid fa-video"></i>
+          <span>Video Manager</span>
+        </a>
+
+        <a class="sbItem" href="./pdf.html">
+          <i class="fa-solid fa-file-pdf"></i>
+          <span>Notes PDF</span>
+        </a>
+
+        <a class="sbItem" href="./test.html">
+          <i class="fa-solid fa-pen-to-square"></i>
+          <span>Weekly Test</span>
+        </a>
+
+        <a class="sbItem" href="./quiz.html">
+          <i class="fa-solid fa-bolt"></i>
+          <span>Quiz</span>
+        </a>
+
+        <a class="sbItem" href="./ebook.html">
+          <i class="fa-solid fa-book"></i>
+          <span>E-book</span>
+        </a>
+
+        <a class="sbItem" href="./ca.html">
+          <i class="fa-solid fa-newspaper"></i>
+          <span>Current Affairs</span>
+        </a>
+
+        <a class="sbItem" href="./banner.html">
+          <i class="fa-solid fa-image"></i>
+          <span>Banner</span>
+        </a>
+      </nav>
+
+      <div class="sbFooter">
+        <div class="sbMiniText">Owner Only</div>
+        <div class="sbMiniEmail" id="adminEmailTxt">-</div>
       </div>
-    </header>
+    </aside>
 
-    <section class="contentGrid">
-
-      <!-- Upload Video -->
-      <div class="card">
+    <!-- Main -->
+    <main class="main">
+      <!-- Upload Card -->
+      <section class="card">
         <div class="cardHead">
-          <div class="cardTitle">
-            <i class="fa-solid fa-cloud-arrow-up"></i>
-            Upload Video
+          <div>
+            <div class="cardTitle">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              Upload Video
+            </div>
+            <div class="cardSub">Device से वीडियो चुनो और Blogger में publish करो</div>
           </div>
 
-          <div class="pill" id="uploadStatus">
-            <i class="fa-solid fa-circle-info"></i>
-            Ready
+          <div class="pill" id="livePill">
+            <i class="fa-solid fa-circle"></i>
+            Live
           </div>
         </div>
 
-        <div class="formGrid">
-          <div style="grid-column:1/-1;">
-            <div class="labelTxt">Title</div>
-            <input id="vTitle" class="field" placeholder="Video title">
+        <div class="grid2">
+          <div>
+            <label class="lbl">Title</label>
+            <input class="field" id="titleInp" placeholder="Ex: REET GK Class 1" />
           </div>
 
-          <div style="grid-column:1/-1;">
-            <div class="labelTxt">Label</div>
-            <select id="vLabel" class="field">
-              <option value="">Loading labels...</option>
-            </select>
-
-            <div class="createRow">
-              <input id="newLabel" class="field" placeholder="Create new label (optional)">
-              <button id="btnAddLabel" class="btnGhost mini">
+          <div>
+            <label class="lbl">Label</label>
+            <div class="labelRow">
+              <select class="field" id="labelSel"></select>
+              <button class="btnGhost" id="newLabelBtn" type="button" title="Create New Label">
                 <i class="fa-solid fa-plus"></i>
-                Add
               </button>
             </div>
           </div>
-
-          <div style="grid-column:1/-1;">
-            <div class="labelTxt">Choose Video File</div>
-            <input id="vFile" class="field fileField" type="file" accept="video/*">
-          </div>
         </div>
 
-        <!-- Progress -->
+        <label class="lbl mt14">Choose video file</label>
+        <input type="file" id="fileInp" class="fileField" accept="video/*" />
+
         <div class="progressWrap">
           <div class="progressTop">
             <div class="progressTxt" id="progTxt">0% • 0 MB / 0 MB</div>
-            <div class="progressSpeed" id="speedTxt">—</div>
+            <div class="progressTxt" id="speedTxt">0 KB/s</div>
           </div>
-          <div class="progressBar">
-            <div class="progressFill" id="progFill" style="width:0%"></div>
+          <div class="bar">
+            <div class="barFill" id="barFill"></div>
           </div>
         </div>
 
-        <div class="actionsRow">
-          <button id="btnUpload" class="btnPrimary">
-            <i class="fa-solid fa-upload"></i>
-            Upload & Submit
+        <div class="btnRow">
+          <button class="btnPrimary" id="uploadBtn" type="button">
+            <i class="fa-solid fa-upload"></i> Upload & Submit
           </button>
 
-          <button id="btnClear" class="btnGhost">
-            <i class="fa-solid fa-rotate"></i>
-            Clear
+          <button class="btnGhost" id="clearBtn" type="button">
+            <i class="fa-solid fa-eraser"></i> Clear
           </button>
         </div>
-      </div>
 
-      <!-- Manage -->
-      <div class="card">
+        <div class="noteMini">
+          <i class="fa-solid fa-shield-halved"></i>
+          सिर्फ Admin upload कर सकता है ✅
+        </div>
+      </section>
+
+      <!-- List Card -->
+      <section class="card">
         <div class="cardHead">
-          <div class="cardTitle">
-            <i class="fa-solid fa-list"></i>
-            Uploaded Videos
+          <div>
+            <div class="cardTitle">
+              <i class="fa-solid fa-list"></i>
+              Uploaded Videos (Label-wise)
+            </div>
+            <div class="cardSub">Label select करके videos देखो</div>
           </div>
 
-          <button id="btnRefresh" class="btnGhost smallBtn">
-            <i class="fa-solid fa-arrows-rotate"></i>
+          <button class="iconBtn" id="refreshBtn" title="Refresh">
+            <i class="fa-solid fa-rotate"></i>
           </button>
         </div>
 
-        <div class="searchRow">
-          <input id="qSearch" class="field" placeholder="Search...">
+        <div class="grid2">
+          <div>
+            <label class="lbl">Filter Label</label>
+            <select class="field" id="filterLabelSel"></select>
+          </div>
+          <div>
+            <label class="lbl">Search</label>
+            <input class="field" id="searchInp" placeholder="Search title..." />
+          </div>
         </div>
 
-        <div class="postsBox" id="listBox">
-          <div class="mutedSmall">Loading...</div>
+        <div class="list" id="listBox">
+          <div class="emptyTxt">Loading...</div>
         </div>
-      </div>
+      </section>
+    </main>
+  </div>
 
-    </section>
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
 
-  </main>
-</div>
+  <!-- Scripts -->
+  <script src="./assets/js/config.js"></script>
+  <script src="./assets/js/ui.js"></script>
+  <script src="./assets/js/auth.js"></script>
+  <script src="./assets/js/blogger.js"></script>
 
-<script type="module" src="./assets/js/config.js"></script>
-<script type="module" src="./assets/js/auth.js"></script>
-<script type="module" src="./assets/js/pages/video.js"></script>
+  <script type="module" src="./assets/js/pages/video.js"></script>
 </body>
 </html>
