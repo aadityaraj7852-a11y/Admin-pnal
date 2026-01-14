@@ -1,110 +1,125 @@
-(function () {
-  const CFG = window.CONFIG;
+import { CONFIG } from "./config.js";
+import { getToken } from "./auth.js";
 
-  function must(v, name) {
-    if (!v) throw new Error(`${name} missing in config.js`);
-    return v;
+function bloggerUrl(path, params = {}) {
+  const url = new URL(`https://www.googleapis.com/blogger/v3/${path}`);
+  url.searchParams.set("key", CONFIG.BLOGGER_KEY);
+
+  for (const [k, v] of Object.entries(params)) {
+    if (v !== undefined && v !== null && v !== "") url.searchParams.set(k, v);
+  }
+  return url.toString();
+}
+
+async function readJsonSafe(res){
+  try { return await res.json(); }
+  catch { return null; }
+}
+
+function mustToken(){
+  const token = getToken();
+  if(!token) throw new Error("Google token missing ❌ (Logout करके दुबारा login कर)");
+  return token;
+}
+
+async function apiGET(path, params = {}) {
+  const token = getToken();
+  const res = await fetch(bloggerUrl(path, params), {
+    headers: token ? { Authorization: `Bearer ${token}` } : {}
+  });
+
+  const data = await readJsonSafe(res);
+  if(!res.ok){
+    console.log("Blogger GET Error:", data);
+    throw new Error(data?.error?.message || `GET Failed (${res.status})`);
+  }
+  return data;
+}
+
+async function apiPOST(path, bodyObj) {
+  const token = mustToken();
+
+  const res = await fetch(bloggerUrl(path), {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify(bodyObj)
+  });
+
+  const data = await readJsonSafe(res);
+  if(!res.ok){
+    console.log("Blogger POST Error:", data);
+    throw new Error(data?.error?.message || `POST Failed (${res.status})`);
   }
 
-  const BLOG_ID = must(CFG?.blogger?.blogId, "CONFIG.blogger.blogId");
-  const API_KEY = must(CFG?.blogger?.apiKey, "CONFIG.blogger.apiKey");
+  return data;
+}
 
-  async function getAccessToken() {
-    // Google Identity Services (GIS)
-    if (window.google?.accounts?.oauth2) {
-      // token is stored by auth.js generally
-      const t = window.AUTH?.getToken?.();
-      if (t?.access_token) return t.access_token;
-    }
+async function apiDELETE(path) {
+  const token = mustToken();
 
-    // fallback: if auth.js saved token in localStorage
-    try {
-      const raw = localStorage.getItem("mockrise_token");
-      if (!raw) return null;
-      const tok = JSON.parse(raw);
-      return tok?.access_token || null;
-    } catch (e) {
-      return null;
-    }
+  const res = await fetch(bloggerUrl(path), {
+    method: "DELETE",
+    headers: { Authorization: `Bearer ${token}` }
+  });
+
+  if (res.status === 204) return { ok: true };
+
+  const data = await readJsonSafe(res);
+  if(!res.ok){
+    console.log("Blogger DELETE Error:", data);
+    throw new Error(data?.error?.message || `DELETE Failed (${res.status})`);
   }
+  return { ok: true, data };
+}
 
-  async function callBlogger(url, options = {}) {
-    const token = await getAccessToken();
-    if (!token) throw new Error("No access token. Please login with Google again.");
-
-    const res = await fetch(url, {
-      method: options.method || "GET",
-      headers: {
-        "Authorization": `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: options.body ? JSON.stringify(options.body) : undefined,
+// ✅ Labels
+export async function fetchLabels() {
+  // ✅ ये endpoint कभी-कभी fail करता है, इसलिए fallback भी रखा
+  try{
+    const d = await apiGET(`blogs/${CONFIG.BLOGGER_ID}/posts/labels`);
+    return d.items || [];
+  }catch(e){
+    // fallback: posts से labels निकालेंगे
+    const d = await apiGET(`blogs/${CONFIG.BLOGGER_ID}/posts`, {
+      maxResults: 20,
+      fields: "items(labels)"
     });
-
-    const text = await res.text();
-    let data;
-    try { data = JSON.parse(text); } catch (e) { data = { raw: text }; }
-
-    if (!res.ok) {
-      console.log("Blogger API Error:", data);
-      throw new Error(data?.error?.message || `Blogger API failed (${res.status})`);
-    }
-
-    return data;
-  }
-
-  async function createPost({ title, contentHTML, labels = [] }) {
-    const url =
-      `https://www.googleapis.com/blogger/v3/blogs/${BLOG_ID}/posts/` +
-      `?key=${API_KEY}`;
-
-    const payload = {
-      kind: "blogger#post",
-      title: title,
-      content: contentHTML,
-      labels: labels
-    };
-
-    return callBlogger(url, { method: "POST", body: payload });
-  }
-
-  async function listPostsByLabel(label) {
-    const url =
-      `https://www.googleapis.com/blogger/v3/blogs/${BLOG_ID}/posts` +
-      `?key=${API_KEY}&labels=${encodeURIComponent(label)}&maxResults=50&fetchBodies=false`;
-
-    return callBlogger(url);
-  }
-
-  async function getAllLabelsSafe() {
-    // Blogger v3 में "labels list" direct endpoint नहीं है,
-    // इसलिए हम latest posts से labels निकाल रहे हैं ✅
-    const url =
-      `https://www.googleapis.com/blogger/v3/blogs/${BLOG_ID}/posts` +
-      `?key=${API_KEY}&maxResults=50&fetchBodies=false`;
-
-    const data = await callBlogger(url);
-    const items = data?.items || [];
-
     const set = new Set();
-    items.forEach(p => (p.labels || []).forEach(l => set.add(l)));
-
+    (d.items || []).forEach(p => (p.labels || []).forEach(l => set.add(l)));
     return [...set];
   }
+}
 
-  async function getPostsByLabelSafe(label) {
-    const data = await listPostsByLabel(label);
-    const items = data?.items || [];
-    return items.map(p => ({
-      title: p.title || "",
-      published: p.published || "",
-      url: p.url || p.selfLink || ""
-    }));
-  }
+// ✅ Posts by label
+export async function fetchPostsByLabel(label, maxResults = 20) {
+  const d = await apiGET(`blogs/${CONFIG.BLOGGER_ID}/posts`, {
+    labels: label,
+    maxResults,
+    fields: "items(id,title,updated,published,url,labels)"
+  });
+  return d.items || [];
+}
 
-  window.BLOGGER = {
-    createPost,
-    getPostsByLabelSafe,
-    getAllLabelsSafe
+// ✅ Publish
+export async function publishPost({ title, html, labels = [] }) {
+  const body = {
+    kind: "blogger#post",
+    blog: { id: CONFIG.BLOGGER_ID },
+    title,
+    content: html,
+    labels
   };
-})();
+
+  const r = await apiPOST(`blogs/${CONFIG.BLOGGER_ID}/posts/`, body);
+
+  if (!r?.id) throw new Error("Publish failed ❌");
+  return r;
+}
+
+// ✅ Delete
+export async function deletePost(postId) {
+  return await apiDELETE(`blogs/${CONFIG.BLOGGER_ID}/posts/${postId}`);
+}
