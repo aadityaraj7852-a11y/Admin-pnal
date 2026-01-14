@@ -98,63 +98,62 @@
 
     <section class="contentGrid">
 
-      <!-- Add Video -->
+      <!-- Upload Video -->
       <div class="card">
         <div class="cardHead">
           <div class="cardTitle">
-            <i class="fa-solid fa-circle-plus"></i>
-            Add Video
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            Upload Video
           </div>
 
-          <div class="pill" id="writeStatus">
-            <i class="fa-solid fa-lock"></i>
-            Write Locked
+          <div class="pill" id="uploadStatus">
+            <i class="fa-solid fa-circle-info"></i>
+            Ready
           </div>
         </div>
 
         <div class="formGrid">
-          <div>
+          <div style="grid-column:1/-1;">
             <div class="labelTxt">Title</div>
             <input id="vTitle" class="field" placeholder="Video title">
           </div>
 
-          <div>
-            <div class="labelTxt">Class / Tag</div>
-            <input id="vClass" class="field" placeholder="Class 1 / REET / etc">
-          </div>
-
-          <div>
-            <div class="labelTxt">Video URL</div>
-            <input id="vUrl" class="field" placeholder="https://youtube.com/...">
-          </div>
-
-          <div>
-            <div class="labelTxt">Thumbnail URL</div>
-            <input id="vThumb" class="field" placeholder="https://...jpg">
-          </div>
-
-          <div>
+          <div style="grid-column:1/-1;">
             <div class="labelTxt">Label</div>
             <select id="vLabel" class="field">
-              <option value="Video" selected>Video</option>
-              <option value="REET Video">REET Video</option>
-              <option value="Class Video">Class Video</option>
+              <option value="">Loading labels...</option>
             </select>
+
+            <div class="createRow">
+              <input id="newLabel" class="field" placeholder="Create new label (optional)">
+              <button id="btnAddLabel" class="btnGhost mini">
+                <i class="fa-solid fa-plus"></i>
+                Add
+              </button>
+            </div>
           </div>
 
-          <div>
-            <div class="labelTxt">Visibility</div>
-            <select id="vVis" class="field">
-              <option value="public" selected>Public</option>
-              <option value="draft">Draft</option>
-            </select>
+          <div style="grid-column:1/-1;">
+            <div class="labelTxt">Choose Video File</div>
+            <input id="vFile" class="field fileField" type="file" accept="video/*">
+          </div>
+        </div>
+
+        <!-- Progress -->
+        <div class="progressWrap">
+          <div class="progressTop">
+            <div class="progressTxt" id="progTxt">0% • 0 MB / 0 MB</div>
+            <div class="progressSpeed" id="speedTxt">—</div>
+          </div>
+          <div class="progressBar">
+            <div class="progressFill" id="progFill" style="width:0%"></div>
           </div>
         </div>
 
         <div class="actionsRow">
-          <button id="btnPublish" class="btnPrimary">
+          <button id="btnUpload" class="btnPrimary">
             <i class="fa-solid fa-upload"></i>
-            Publish
+            Upload & Submit
           </button>
 
           <button id="btnClear" class="btnGhost">
@@ -162,18 +161,14 @@
             Clear
           </button>
         </div>
-
-        <div class="tinyNote" id="hintTxt">
-          Publish enable करने के लिए Blogger write token चाहिए (next step मैं दे दूँगा).
-        </div>
       </div>
 
-      <!-- Manage Videos -->
+      <!-- Manage -->
       <div class="card">
         <div class="cardHead">
           <div class="cardTitle">
             <i class="fa-solid fa-list"></i>
-            Manage
+            Uploaded Videos
           </div>
 
           <button id="btnRefresh" class="btnGhost smallBtn">
@@ -182,7 +177,7 @@
         </div>
 
         <div class="searchRow">
-          <input id="qSearch" class="field" placeholder="Search video...">
+          <input id="qSearch" class="field" placeholder="Search...">
         </div>
 
         <div class="postsBox" id="listBox">
@@ -198,6 +193,5 @@
 <script type="module" src="./assets/js/config.js"></script>
 <script type="module" src="./assets/js/auth.js"></script>
 <script type="module" src="./assets/js/pages/video.js"></script>
-
 </body>
 </html>
