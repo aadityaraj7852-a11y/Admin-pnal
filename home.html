@@ -23,13 +23,13 @@
   <aside class="side" id="sideBar">
     <div class="sideTop">
 
-      <!-- ✅ Brand (ICON हटाया) -->
+      <!-- ✅ Brand -->
       <div class="brandClean">
         <div class="brandTitleBig">Mockrise</div>
         <div class="brandSubSmall">Admin Panel</div>
       </div>
 
-      <!-- ✅ Mini User Card -->
+      <!-- ✅ Mini User -->
       <div class="userMini">
         <div class="userMiniRow">
           <img class="userMiniPic" id="userPic" src="https://i.imgur.com/4M34hi2.png" alt="user">
@@ -41,13 +41,11 @@
 
         <div class="userMiniBtns">
           <button class="btnPrimary miniBtn" id="loginBtn">
-            <i class="fa-solid fa-right-to-bracket"></i>
-            Login
+            <i class="fa-solid fa-right-to-bracket"></i> Login
           </button>
 
           <button class="btnGhost miniBtn" id="logoutBtn">
-            <i class="fa-solid fa-arrow-right-from-bracket"></i>
-            Logout
+            <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
           </button>
         </div>
 
@@ -56,18 +54,11 @@
         </div>
       </div>
 
-      <!-- ✅ Search (icon हटाया) -->
-      <div class="sideSearchClean">
-        <input id="sideSearchInput" placeholder="Search..." />
-      </div>
+      <!-- ✅ Search हटाया (पूरी तरह) -->
 
-      <div class="sideSectionTitle">
-        Menu
-      </div>
+      <div class="sideSectionTitle">Menu</div>
 
-      <!-- ✅ Menu -->
       <div class="labelsBox" id="menuBox">
-
         <a class="labelBtn labelBtnActive" href="./home.html">
           <span><i class="fa-solid fa-gauge-high"></i> Dashboard</span>
           <span class="badge">Home</span>
@@ -104,10 +95,9 @@
         </a>
 
         <a class="labelBtn" href="./banner.html">
-          <span><i class="fa-regular fa-images"></i> Baner</span>
+          <span><i class="fa-regular fa-images"></i> Add Baners</span>
           <span class="badge" id="countBanner">0</span>
         </a>
-
       </div>
 
     </div>
@@ -121,65 +111,67 @@
   <main class="main">
 
     <!-- ✅ CoprepEdu Style Header -->
-    <div class="topbar">
-      <div class="topbarLeft">
-        <button class="menuCircle" id="toggleMenu" title="Menu">
+    <header class="cwHeader">
+      <div class="cwLeft">
+        <button class="cwIconBtn" id="toggleMenu" title="Menu">
           <i class="fa-solid fa-bars"></i>
         </button>
 
-        <div>
-          <div class="pageTitle">Dashboard</div>
-          <div class="pageSub" id="statusTxt">Ready ✅</div>
+        <div class="cwTitleWrap">
+          <div class="cwTitle">Dashboard</div>
+          <div class="cwSub" id="statusTxt">Ready ✅</div>
         </div>
       </div>
 
-      <div class="topbarRight">
-        <a class="topbarBtn" href="./home.html" title="Refresh">
-          <i class="fa-solid fa-rotate-right"></i>
+      <div class="cwRight">
+        <a class="cwIconBtn" id="openWebsiteTopBtn" href="https://mockrise.com" target="_blank" title="Open Website">
+          <i class="fa-solid fa-globe"></i>
         </a>
+
+        <button class="cwIconBtn danger" id="logoutTopBtn" title="Logout">
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </button>
       </div>
-    </div>
+    </header>
 
     <!-- ✅ Content -->
     <section class="contentGrid">
 
-      <!-- ✅ Website -->
-      <div class="card">
-        <div class="cardHead">
-          <div>
-            <div class="cardTitle">🌐 Live Website Control</div>
-            <div class="cardSub">एक click में site open + copy</div>
-          </div>
-          <span class="pill">Online ✅</span>
-        </div>
+      <!-- ✅ HERO Banner (Playstore वाली जगह) -->
+      <div class="heroCard">
+        <div class="heroText">
+          <div class="heroHeading">Welcome, Mockrise 👋</div>
+          <div class="heroPara">Website जल्दी open करो या copy करके share कर दो ✅</div>
 
-        <div class="websiteBox">
-          <div class="siteUrl" id="siteUrl">https://mockrise.com</div>
-
-          <div class="siteBtns">
-            <a class="btnPrimary" id="openSiteBtn" target="_blank">
+          <div class="heroActions">
+            <a class="heroBtnPrimary" id="openSiteBtn" href="https://mockrise.com" target="_blank">
               <i class="fa-solid fa-arrow-up-right-from-square"></i>
-              Open
+              Open Website
             </a>
 
-            <button class="btnGhost" id="copySiteBtn">
+            <button class="heroBtnGhost" id="copySiteBtn">
               <i class="fa-regular fa-copy"></i>
-              Copy
+              Copy Link
             </button>
           </div>
+
+          <div class="heroLink" id="siteUrl">https://mockrise.com</div>
         </div>
 
-        <div class="tinyNote">
-          ⚙️ Website link `assets/js/config.js` में बदल सकता है
+        <div class="heroStats">
+          <div class="heroStatBox">
+            <div class="heroStatLabel">Today</div>
+            <div class="heroStatValue">Live ✅</div>
+          </div>
         </div>
       </div>
 
-      <!-- ✅ Analytics -->
+      <!-- ✅ Content Analytics -->
       <div class="card">
         <div class="cardHead">
           <div>
             <div class="cardTitle">📊 Content Analytics</div>
-            <div class="cardSub">Blogger Labels से auto count</div>
+            <div class="cardSub">Auto count (Blogger Labels)</div>
           </div>
           <span class="pill">Auto ⚡</span>
         </div>
@@ -216,11 +208,10 @@
           </div>
 
           <div class="statBox fullRow">
-            <div class="statLabel"><i class="fa-regular fa-images"></i> Baner</div>
+            <div class="statLabel"><i class="fa-regular fa-images"></i> Baners</div>
             <div class="statValue" id="statBanner">0</div>
           </div>
         </div>
-
       </div>
 
     </section>
@@ -229,6 +220,40 @@
 
 </div>
 
+<script type="module">
+  // ✅ Sidebar toggle (mobile)
+  const sideBar = document.getElementById("sideBar");
+  const overlay = document.getElementById("sideOverlay");
+  const toggleMenu = document.getElementById("toggleMenu");
+
+  toggleMenu?.addEventListener("click", ()=>{
+    sideBar.classList.toggle("open");
+    overlay.classList.toggle("show");
+  });
+
+  overlay?.addEventListener("click", ()=>{
+    sideBar.classList.remove("open");
+    overlay.classList.remove("show");
+  });
+
+  // ✅ Top logout button => sidebar logout click
+  document.getElementById("logoutTopBtn")?.addEventListener("click", ()=>{
+    document.getElementById("logoutBtn")?.click();
+  });
+
+  // ✅ Copy site
+  document.getElementById("copySiteBtn")?.addEventListener("click", async ()=>{
+    const url = document.getElementById("siteUrl")?.textContent?.trim() || "https://mockrise.com";
+    try{
+      await navigator.clipboard.writeText(url);
+      alert("✅ Website link copied!");
+    }catch(e){
+      prompt("Copy this:", url);
+    }
+  });
+</script>
+
 <script type="module" src="./assets/js/pages/home.js"></script>
+
 </body>
 </html>
