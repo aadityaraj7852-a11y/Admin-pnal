@@ -1,18 +1,34 @@
 import { CONFIG } from "../config.js";
 
+/*
+  ✅ Auth System (Simple)
+  हम मान रहे हैं login के बाद localStorage में ये set होगा:
+  localStorage.setItem("mockrise_logged_in","1");
+*/
+
+function isLoggedIn(){
+  return localStorage.getItem("mockrise_logged_in") === "1";
+}
+
+function goLogin(){
+  window.location.href = "./index.html";
+}
+
+/* ✅ Block dashboard without login */
+if(!isLoggedIn()){
+  goLogin();
+}
+
+/* ✅ Sidebar Toggle */
 const sideBar = document.getElementById("sideBar");
 const overlay = document.getElementById("sideOverlay");
 const toggleMenu = document.getElementById("toggleMenu");
-
-const openSiteBtn = document.getElementById("openSiteBtn");
-const copySiteBtn = document.getElementById("copySiteBtn");
 
 function openSidebar(){
   sideBar.classList.add("open");
   overlay.classList.add("show");
   document.body.style.overflow = "hidden";
 }
-
 function closeSidebar(){
   sideBar.classList.remove("open");
   overlay.classList.remove("show");
@@ -26,12 +42,18 @@ toggleMenu?.addEventListener("click", ()=>{
 
 overlay?.addEventListener("click", closeSidebar);
 
-/* ✅ Open Website */
+document.querySelectorAll("#menuBox a").forEach(a=>{
+  a.addEventListener("click", closeSidebar);
+});
+
+/* ✅ Website Buttons */
+const openSiteBtn = document.getElementById("openSiteBtn");
+const copySiteBtn = document.getElementById("copySiteBtn");
+
 if(openSiteBtn){
   openSiteBtn.href = CONFIG.WEBSITE_URL;
 }
 
-/* ✅ Copy Link */
 copySiteBtn?.addEventListener("click", async ()=>{
   try{
     await navigator.clipboard.writeText(CONFIG.WEBSITE_URL);
@@ -41,12 +63,10 @@ copySiteBtn?.addEventListener("click", async ()=>{
   }
 });
 
-/* ✅ Menu click = close sidebar */
-document.querySelectorAll("#menuBox a").forEach(a=>{
-  a.addEventListener("click", closeSidebar);
-});
-
-/* ✅ Top logout button -> click sidebar logout */
+/* ✅ Logout button working (Header वाला) */
 document.getElementById("logoutTopBtn")?.addEventListener("click", ()=>{
-  document.getElementById("logoutBtn")?.click();
+  // clear login
+  localStorage.removeItem("mockrise_logged_in");
+  // go login page
+  goLogin();
 });
