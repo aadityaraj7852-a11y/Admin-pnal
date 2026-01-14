@@ -6,10 +6,21 @@ function setStatus(txt){
   $("statusTxt").textContent = txt;
 }
 
-function toggleSidebar(){
-  $("sideBar").classList.toggle("open");
+/* ✅ Sidebar toggle (mobile) */
+function openSidebar(){
+  $("sideBar").classList.add("open");
+  $("sideOverlay").classList.add("show");
 }
-$("toggleMenu").addEventListener("click", toggleSidebar);
+function closeSidebar(){
+  $("sideBar").classList.remove("open");
+  $("sideOverlay").classList.remove("show");
+}
+
+$("toggleMenu").addEventListener("click", ()=>{
+  const open = $("sideBar").classList.contains("open");
+  open ? closeSidebar() : openSidebar();
+});
+$("sideOverlay").addEventListener("click", closeSidebar);
 
 /* ✅ Website */
 $("siteUrl").textContent = CONFIG.WEBSITE_URL;
@@ -24,7 +35,19 @@ $("copySiteBtn").addEventListener("click", async ()=>{
   }
 });
 
-/* ✅ Blogger label count */
+/* ✅ Sidebar search */
+const searchInput = $("sideSearchInput");
+if(searchInput){
+  searchInput.addEventListener("input", ()=>{
+    const q = searchInput.value.trim().toLowerCase();
+    document.querySelectorAll("#menuBox .labelBtn").forEach(btn=>{
+      const txt = btn.innerText.toLowerCase();
+      btn.style.display = txt.includes(q) ? "" : "none";
+    });
+  });
+}
+
+/* ✅ Blogger labels count */
 async function fetchLabelsCount(){
   const url =
     `https://www.googleapis.com/blogger/v3/blogs/${CONFIG.BLOGGER_ID}/posts/labels`+
@@ -40,7 +63,7 @@ function findCount(allLabels, labelName){
   return x?.posts ?? 0;
 }
 
-async function init(){
+async function initCounts(){
   try{
     setStatus("Loading...");
     const labels = await fetchLabelsCount();
@@ -53,7 +76,7 @@ async function init(){
     const c = findCount(labels, CONFIG.LABELS.CA);
     const b = findCount(labels, CONFIG.LABELS.BANNER);
 
-    // Stats
+    // stats
     $("statVideo").textContent = v;
     $("statPdf").textContent = p;
     $("statWeekly").textContent = w;
@@ -62,7 +85,7 @@ async function init(){
     $("statCA").textContent = c;
     $("statBanner").textContent = b;
 
-    // Sidebar badges
+    // sidebar badges
     $("countVideo").textContent = v;
     $("countPdf").textContent = p;
     $("countWeekly").textContent = w;
@@ -78,4 +101,4 @@ async function init(){
   }
 }
 
-init();
+initCounts();
