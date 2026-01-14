@@ -1,8 +1,4 @@
-import { initFirebaseStorage, uploadFileWithProgress } from "../uploader.js";
-
 const $ = (id) => document.getElementById(id);
-
-let storageRef = null;
 
 function toast(msg){
   const t = $("toast");
@@ -13,17 +9,6 @@ function toast(msg){
 
 function setStatus(txt){
   $("statusTxt").textContent = txt;
-}
-
-function bytesToSize(bytes){
-  if(!bytes) return "0 MB";
-  const gb = 1024*1024*1024;
-  const mb = 1024*1024;
-  const kb = 1024;
-
-  if(bytes >= gb) return (bytes/gb).toFixed(2) + " GB";
-  if(bytes >= mb) return (bytes/mb).toFixed(2) + " MB";
-  return (bytes/kb).toFixed(2) + " KB";
 }
 
 /** ✅ Sidebar toggle fix */
@@ -49,39 +34,70 @@ function setupSidebarToggle(){
   overlay.addEventListener("click", close);
 }
 
-async function requireAdmin(){
-  const ok = await window.AUTH.requireAdmin();
-  if(!ok){
-    location.href = "./index.html";
-    return false;
+function normalizeYouTube(url){
+  url = (url || "").trim();
+  if(!url) return "";
+
+  // allow youtu.be / youtube.com
+  if(!url.includes("youtu")) return "";
+
+  // convert shorts to watch
+  if(url.includes("/shorts/")){
+    const id = url.split("/shorts/")[1]?.split(/[?&]/)[0];
+    if(id) return `https://www.youtube.com/watch?v=${id}`;
   }
-  return true;
+
+  // youtu.be -> watch
+  if(url.includes("youtu.be/")){
+    const id = url.split("youtu.be/")[1]?.split(/[?&]/)[0];
+    if(id) return `https://www.youtube.com/watch?v=${id}`;
+  }
+
+  return url;
+}
+
+function extractVideoId(url){
+  if(!url) return "";
+  try{
+    const u = new URL(url);
+    if(u.searchParams.get("v")) return u.searchParams.get("v");
+    // fallback
+    return "";
+  }catch(e){
+    return "";
+  }
 }
 
 async function loadLabelsInto(selectEl){
-  // ✅ Blogger labels list fetch (posts labels से)
-  const labels = await window.BLOGGER.getAllLabelsSafe();
+  // ✅ fallback labels from config
+  const base = window.CONFIG?.blogger?.labelsOrder || [];
 
-  // ✅ base labels from config
-  const base = window.CONFIG.blogger.labelsOrder || [];
+  // ✅ labels from blogger
+  let labels = [];
+  try{
+    labels = await window.BLOGGER.getAllLabelsSafe();
+  }catch(e){
+    labels = [];
+  }
 
-  // merge + unique
-  const merged = [...new Set([...base, ...labels])];
+  const merged = [...new Set([...base, ...labels])].filter(Boolean);
 
   selectEl.innerHTML = "";
+
+  if(!merged.length){
+    const opt = document.createElement("option");
+    opt.value = window.CONFIG.blogger.labels.videos || "Videos";
+    opt.textContent = window.CONFIG.blogger.labels.videos || "Videos";
+    selectEl.appendChild(opt);
+    return;
+  }
+
   merged.forEach(l=>{
     const opt = document.createElement("option");
     opt.value = l;
     opt.textContent = l;
     selectEl.appendChild(opt);
   });
-
-  if(!merged.length){
-    const opt = document.createElement("option");
-    opt.value = window.CONFIG.blogger.labels.videos;
-    opt.textContent = window.CONFIG.blogger.labels.videos;
-    selectEl.appendChild(opt);
-  }
 }
 
 async function promptNewLabel(){
@@ -90,18 +106,13 @@ async function promptNewLabel(){
   return name.trim();
 }
 
-function setProgress(pct, loaded, total, speed){
-  $("barFill").style.width = `${pct}%`;
-  $("progTxt").textContent = `${pct}% • ${bytesToSize(loaded)} / ${bytesToSize(total)}`;
-  $("speedTxt").textContent = speed ? `${bytesToSize(speed)}/s` : "0 KB/s";
-}
-
 async function refreshList(){
   setStatus("Loading...");
   const label = $("filterLabelSel").value;
   const search = ($("searchInp").value || "").toLowerCase();
 
   const posts = await window.BLOGGER.getPostsByLabelSafe(label);
+
   const list = (posts || [])
     .filter(p => (p.title || "").toLowerCase().includes(search))
     .slice(0, 30);
@@ -128,7 +139,7 @@ async function refreshList(){
           <i class="fa-solid fa-up-right-from-square"></i> Open
         </button>
         <button class="smallBtn" data-copy="${p.url}">
-          <i class="fa-solid fa-copy"></i> Copy Link
+          <i class="fa-solid fa-copy"></i> Copy
         </button>
       </div>
     `;
@@ -137,16 +148,14 @@ async function refreshList(){
 
   box.querySelectorAll("[data-open]").forEach(btn=>{
     btn.addEventListener("click", ()=>{
-      const u = btn.getAttribute("data-open");
-      window.open(u, "_blank");
+      window.open(btn.getAttribute("data-open"), "_blank");
     });
   });
 
   box.querySelectorAll("[data-copy]").forEach(btn=>{
     btn.addEventListener("click", async ()=>{
-      const u = btn.getAttribute("data-copy");
-      await navigator.clipboard.writeText(u);
-      toast("Copied ✅");
+      await navigator.clipboard.writeText(btn.getAttribute("data-copy"));
+      toast("Copied");
     });
   });
 
@@ -158,30 +167,30 @@ async function main(){
 
   $("adminEmailTxt").textContent = window.CONFIG.admin.email;
 
-  // ✅ logout
   $("logoutBtn").addEventListener("click", async ()=>{
     await window.AUTH.logout();
     location.href = "./index.html";
   });
 
-  const ok = await requireAdmin();
-  if(!ok) return;
-
-  // ✅ init firebase storage
-  storageRef = await initFirebaseStorage();
+  // ✅ admin check
+  const ok = await window.AUTH.requireAdmin();
+  if(!ok){
+    location.href = "./index.html";
+    return;
+  }
 
   // ✅ load labels
   await loadLabelsInto($("labelSel"));
   await loadLabelsInto($("filterLabelSel"));
 
-  // default filter to Videos label
-  $("filterLabelSel").value = window.CONFIG.blogger.labels.videos || $("filterLabelSel").value;
+  // default label to videos
+  const def = window.CONFIG.blogger.labels.videos || $("filterLabelSel").value;
+  $("filterLabelSel").value = def;
 
   $("newLabelBtn").addEventListener("click", async ()=>{
     const newLabel = await promptNewLabel();
     if(!newLabel) return;
 
-    // add into selects instantly
     const addOpt = (sel)=>{
       const exists = [...sel.options].some(o=>o.value===newLabel);
       if(!exists){
@@ -191,96 +200,80 @@ async function main(){
         sel.appendChild(opt);
       }
     };
+
     addOpt($("labelSel"));
     addOpt($("filterLabelSel"));
     $("labelSel").value = newLabel;
-    toast("Label ready ✅ अब post publish करो");
-  });
 
-  $("refreshBtn").addEventListener("click", refreshList);
-  $("filterLabelSel").addEventListener("change", refreshList);
-  $("searchInp").addEventListener("input", ()=>{
-    clearTimeout(window.__srchT);
-    window.__srchT=setTimeout(refreshList,250);
+    toast("Label ready");
   });
 
   $("clearBtn").addEventListener("click", ()=>{
-    $("titleInp").value="";
-    $("fileInp").value="";
-    setProgress(0,0,0,0);
+    $("titleInp").value = "";
+    $("ytInp").value = "";
     toast("Cleared");
   });
 
-  $("uploadBtn").addEventListener("click", async ()=>{
+  $("publishBtn").addEventListener("click", async ()=>{
     try{
       const title = ($("titleInp").value || "").trim();
       const label = $("labelSel").value;
-      const file = $("fileInp").files?.[0];
+      let yt = normalizeYouTube($("ytInp").value);
 
       if(!title){ toast("Title डाल"); return; }
       if(!label){ toast("Label select कर"); return; }
-      if(!file){ toast("Video file चुन"); return; }
+      if(!yt){ toast("Valid YouTube link डाल"); return; }
 
-      setStatus("Uploading...");
-
-      // ✅ upload to firebase storage
-      const folder = window.CONFIG.firebase.folders.videos;
-      const safeName = `${Date.now()}_${file.name}`.replace(/\s+/g,"_");
-      const path = `${folder}/${safeName}`;
-
-      let lastTime = Date.now();
-      let lastBytes = 0;
-
-      const { downloadURL } = await uploadFileWithProgress(storageRef, path, file, (snap)=>{
-        const pct = Math.round((snap.bytesTransferred / snap.totalBytes) * 100);
-        const now = Date.now();
-        const dt = Math.max(1, (now - lastTime) / 1000);
-        const db = snap.bytesTransferred - lastBytes;
-        const speed = db / dt;
-
-        lastTime = now;
-        lastBytes = snap.bytesTransferred;
-
-        setProgress(pct, snap.bytesTransferred, snap.totalBytes, speed);
-      });
+      const vid = extractVideoId(yt);
 
       setStatus("Publishing...");
 
-      // ✅ Create Blogger post (Video label + URL)
-      // Video embed नहीं, सिर्फ link publish (fast + safe)
+      const embed = vid
+        ? `<iframe width="100%" height="315" src="https://www.youtube.com/embed/${vid}" frameborder="0" allowfullscreen></iframe>`
+        : `<a href="${yt}" target="_blank">${yt}</a>`;
+
       const html = `
         <div style="font-family:Arial">
-          <h3>${title}</h3>
-          <p><b>Video Link:</b> <a href="${downloadURL}" target="_blank">${downloadURL}</a></p>
+          <h2>${title}</h2>
+          <div style="margin:10px 0">${embed}</div>
+          <p><a href="${yt}" target="_blank">Open on YouTube</a></p>
         </div>
       `;
 
-      const postRes = await window.BLOGGER.createPost({
+      // ✅ Blogger Post create
+      await window.BLOGGER.createPost({
         title,
         contentHTML: html,
-        labels: [label],
+        labels: [label]
       });
 
-      setStatus("Done ✅");
-      toast("Uploaded & Published ✅");
-
-      // refresh list label wise
-      $("filterLabelSel").value = label;
-      await refreshList();
+      setStatus("Done");
+      toast("Published Successfully");
 
       // reset
       $("titleInp").value = "";
-      $("fileInp").value = "";
-      setProgress(0,0,0,0);
+      $("ytInp").value = "";
 
-    }catch(err){
-      console.log(err);
+      // refresh list
+      $("filterLabelSel").value = label;
+      await refreshList();
+
+    }catch(e){
+      console.log(e);
       setStatus("Failed");
-      toast("Upload/Publish Failed ❌");
+      toast("Publish Failed");
     }
   });
 
-  // initial list
+  $("refreshBtn").addEventListener("click", refreshList);
+
+  $("filterLabelSel").addEventListener("change", refreshList);
+
+  $("searchInp").addEventListener("input", ()=>{
+    clearTimeout(window.__srchT);
+    window.__srchT=setTimeout(refreshList, 250);
+  });
+
   await refreshList();
 }
 
