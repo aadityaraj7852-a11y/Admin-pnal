@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Mockrise • PDF Manager</title>
+
+  <link rel="stylesheet" href="/assets/css/base.css"/>
+  <link rel="stylesheet" href="/assets/css/sidebar.css"/>
+  <link rel="stylesheet" href="/assets/css/pdf.css"/>
+
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+</head>
+
+<body>
+<div class="appShell">
+
+  <aside class="side">
+    <div class="sideTop">
+      <div class="brand">
+        <div class="logoBox"><span class="material-symbols-outlined">dashboard</span></div>
+        <div>
+          <div style="font-weight:950;">Mockrise</div>
+          <div class="mutedSmall">Admin Panel</div>
+        </div>
+      </div>
+
+      <div class="userCard">
+        <div class="userRow">
+          <img id="userPic" class="userPic" src="https://i.ibb.co/2FsfXqM/user.png" alt="user"/>
+          <div style="min-width:0;">
+            <div id="userName" class="userName">-</div>
+            <div id="userEmail" class="userEmail">-</div>
+          </div>
+        </div>
+
+        <div class="userBtns">
+          <a class="btnGhost" href="/home.html"><span class="material-symbols-outlined">home</span> Home</a>
+          <button id="logoutBtn" class="btnGhost"><span class="material-symbols-outlined">logout</span> Logout</button>
+        </div>
+      </div>
+
+      <div class="labelsBox" id="labelsBox"></div>
+
+      <div style="margin-top:14px;display:grid;gap:10px;">
+        <a class="btnGhost" href="/pdf.html">📄 PDF</a>
+        <a class="btnGhost" href="/video.html">🎥 Video</a>
+        <a class="btnGhost" href="/image.html">🖼️ Image</a>
+        <a class="btnGhost" href="/test.html">📝 Test/Quiz</a>
+        <a class="btnGhost" href="/cutoff.html">📊 Cutoff</a>
+        <a class="btnGhost" href="/omr.html">✅ OMR</a>
+      </div>
+    </div>
+
+    <div class="sideBottom">
+      <div class="mutedSmall">admin.mockrise.com ✅</div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <div style="font-weight:950;font-size:18px;">PDF Manager</div>
+        <div class="mutedSmall" id="statusTxt">Ready</div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <a class="btnGhost" href="/index.html">Login</a>
+      </div>
+    </header>
+
+    <section class="content">
+      <div class="card">
+  <h3 style="margin:0;font-weight:950;">PDF Publish</h3>
+  <p class="mutedSmall">Google Drive PDF link या direct PDF link paste करो ✅</p>
+
+  <label class="mutedSmall" style="display:block;margin-top:12px;">Title</label>
+  <input id="title" class="field" placeholder="PDF Title"/>
+
+  <label class="mutedSmall" style="display:block;margin-top:12px;">PDF Link</label>
+  <input id="mainLink" class="field" placeholder="https://drive.google.com/file/d/..."/>
+
+  <label class="mutedSmall" style="display:block;margin-top:12px;">Description (optional)</label>
+  <textarea id="desc" class="textarea" rows="4" placeholder="Short note..."></textarea>
+
+  <button id="publishBtn" class="btnPrimary" style="margin-top:12px;">
+    <span class="material-symbols-outlined">picture_as_pdf</span> Publish PDF
+  </button>
+</div>
+      <div class="card">
+        <h3 style="margin:0;font-weight:950;">Latest Posts (Active Label)</h3>
+        <p class="mutedSmall">Label sidebar से change होगा ✅</p>
+        <div id="postsBox" style="margin-top:10px;display:grid;gap:10px;"></div>
+      </div>
+    </section>
+  </main>
+
+</div>
+
+<script type="module" src="/assets/js/pages/pdf.js"></script>
+</body>
+</html>

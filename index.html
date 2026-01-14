@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Mockrise • Login</title>
+
+  <link rel="stylesheet" href="/assets/css/base.css"/>
+  <link rel="stylesheet" href="/assets/css/login.css"/>
+
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body style="display:flex;align-items:center;justify-content:center;padding:18px;">
+  <div class="card" style="max-width:520px;width:100%;">
+    <h2 style="margin:0;font-weight:950;">Mockrise Admin Login</h2>
+    <p class="mutedSmall">Google login करो (Admin only ✅)</p>
+
+    <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;">
+      <button id="loginBtn" class="btnPrimary">
+        <span class="material-symbols-outlined">login</span>
+        Login with Google
+      </button>
+      <a class="btnGhost" href="/home.html">
+        <span class="material-symbols-outlined">dashboard</span>
+        Go Dashboard
+      </a>
+    </div>
+
+    <p id="statusTxt" class="mutedSmall" style="margin-top:12px;">Ready</p>
+  </div>
+
+  <script type="module" src="/assets/js/pages/login.js"></script>
+</body>
+</html>
