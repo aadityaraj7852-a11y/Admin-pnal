@@ -1,29 +1,61 @@
-const ADMIN_EMAIL = "aadityaraj7852@gmail.com";
+import { CONFIG } from "../config.js";
+import { Auth } from "../auth.js";
 
-// ✅ अगर already login है तो direct home
-if(localStorage.getItem("mockrise_logged_in") === "1"){
-  window.location.href = "./home.html";
+const $ = (id) => document.getElementById(id);
+
+function setStatus(txt) {
+  if ($("statusText")) $("statusText").textContent = txt;
 }
 
-const email = document.getElementById("email");
-const pass = document.getElementById("pass");
-const loginBtn = document.getElementById("loginBtn");
+function initGoogle() {
+  // inject client id into HTML tag
+  const onload = document.getElementById("g_id_onload");
+  if (onload) onload.setAttribute("data-client_id", CONFIG.googleClientId);
 
-loginBtn.addEventListener("click", ()=>{
-  const e = (email.value || "").trim().toLowerCase();
-  const p = (pass.value || "").trim();
+  // listen for GIS credential event
+  window.addEventListener("mockrise_gis", async () => {
+    try {
+      setStatus("Signing in...");
+      const cred = window.__MOCKRISE_GIS_CREDENTIAL || "";
+      await Auth.googleLoginFromCredential(cred);
+      window.location.href = "./home.html";
+    } catch (e) {
+      alert("Access Denied ❌\nOnly admin allowed.");
+      setStatus("Denied");
+      Auth.clear();
+    }
+  });
+}
 
-  if(!e) return alert("Email डाल");
-  if(!p) return alert("Password डाल");
+function initBackup() {
+  const form = $("backupForm");
+  if (!form) return;
 
-  // ✅ Admin email check
-  if(e !== ADMIN_EMAIL.toLowerCase()){
-    return alert("Access Denied (Admin only)");
+  $("bEmail").value = CONFIG.adminEmail;
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    try {
+      Auth.backupLogin($("bEmail").value, $("bPass").value);
+      window.location.href = "./home.html";
+    } catch (err) {
+      alert("Login failed ❌");
+    }
+  });
+
+  if ($("tinyHint")) {
+    $("tinyHint").textContent = "Backup password config.js में change कर सकते हो";
+  }
+}
+
+(function init(){
+  // already logged in
+  if (Auth.isLoggedIn() && Auth.isAdmin()) {
+    window.location.href = "./home.html";
+    return;
   }
 
-  // ✅ Simple login (demo)
-  localStorage.setItem("mockrise_logged_in","1");
-  localStorage.setItem("mockrise_email", e);
-
-  window.location.href = "./home.html";
-});
+  setStatus("Ready");
+  initGoogle();
+  initBackup();
+})();
