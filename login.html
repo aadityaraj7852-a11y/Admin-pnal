@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Mockrise • Admin Login</title>
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+
+  <style>
+    body{font-family:"Lexend",sans-serif;background:#f5f5f8;min-height:100dvh;}
+    .shadow-card{box-shadow:0 14px 40px rgba(0,0,0,.08);}
+    .btnPrimary{
+      width:100%;
+      background:#0a0ac2;color:#fff;
+      font-weight:900;padding:15px;border-radius:20px;
+      box-shadow:0 12px 24px rgba(10,10,194,.20);
+      transition:.2s;
+      display:flex;align-items:center;justify-content:center;gap:10px;
+      cursor:pointer; user-select:none;
+    }
+    .btnPrimary:active{transform:scale(.98);}
+  </style>
+</head>
+
+<body class="flex items-center justify-center p-5">
+  <div class="w-full max-w-[480px] bg-white rounded-3xl p-6 shadow-card border border-gray-100">
+    <div class="text-center">
+      <div class="mx-auto size-14 rounded-2xl bg-[#0a0ac2]/10 flex items-center justify-center text-[#0a0ac2]">
+        <span class="material-symbols-outlined text-3xl">admin_panel_settings</span>
+      </div>
+      <h1 class="text-[#111118] text-2xl font-black mt-4">Mockrise Admin Panel</h1>
+      <p class="text-gray-500 text-sm mt-2 font-bold">
+        Blogger Auto Post System • Labels + Posts + Quiz + PDF + Video ✅
+      </p>
+    </div>
+
+    <div class="mt-6 space-y-3">
+      <a href="./admin.html" class="btnPrimary">
+        <span class="material-symbols-outlined">login</span>
+        Open Admin Panel
+      </a>
+
+      <div class="text-[12px] text-gray-500 font-bold text-center">
+        Note: Admin panel में Google Login लगेगा ✅
+      </div>
+    </div>
+  </div>
+</body>
+</html>
