@@ -1,72 +1,65 @@
 import { CONFIG } from "../config.js";
+import { Auth } from "../auth.js";
+import { setupSidebarToggle } from "../router.js";
 
-/*
-  ✅ Auth System (Simple)
-  हम मान रहे हैं login के बाद localStorage में ये set होगा:
-  localStorage.setItem("mockrise_logged_in","1");
-*/
+const $ = (id) => document.getElementById(id);
 
-function isLoggedIn(){
-  return localStorage.getItem("mockrise_logged_in") === "1";
-}
+async function countByLabel(label) {
+  try {
+    const url =
+      `https://www.googleapis.com/blogger/v3/blogs/${CONFIG.blogger.blogId}/posts` +
+      `?key=${CONFIG.blogger.apiKey}` +
+      `&labels=${encodeURIComponent(label)}` +
+      `&maxResults=1` +
+      `&fetchBodies=false`;
 
-function goLogin(){
-  window.location.href = "./index.html";
-}
-
-/* ✅ Block dashboard without login */
-if(!isLoggedIn()){
-  goLogin();
-}
-
-/* ✅ Sidebar Toggle */
-const sideBar = document.getElementById("sideBar");
-const overlay = document.getElementById("sideOverlay");
-const toggleMenu = document.getElementById("toggleMenu");
-
-function openSidebar(){
-  sideBar.classList.add("open");
-  overlay.classList.add("show");
-  document.body.style.overflow = "hidden";
-}
-function closeSidebar(){
-  sideBar.classList.remove("open");
-  overlay.classList.remove("show");
-  document.body.style.overflow = "";
-}
-
-toggleMenu?.addEventListener("click", ()=>{
-  if(sideBar.classList.contains("open")) closeSidebar();
-  else openSidebar();
-});
-
-overlay?.addEventListener("click", closeSidebar);
-
-document.querySelectorAll("#menuBox a").forEach(a=>{
-  a.addEventListener("click", closeSidebar);
-});
-
-/* ✅ Website Buttons */
-const openSiteBtn = document.getElementById("openSiteBtn");
-const copySiteBtn = document.getElementById("copySiteBtn");
-
-if(openSiteBtn){
-  openSiteBtn.href = CONFIG.WEBSITE_URL;
-}
-
-copySiteBtn?.addEventListener("click", async ()=>{
-  try{
-    await navigator.clipboard.writeText(CONFIG.WEBSITE_URL);
-    alert("Copied");
-  }catch(e){
-    prompt("Copy this:", CONFIG.WEBSITE_URL);
+    const res = await fetch(url);
+    const data = await res.json();
+    // totalItems return sometimes exists
+    if (typeof data.totalItems === "number") return data.totalItems;
+    if (Array.isArray(data.items)) return data.items.length;
+    return 0;
+  } catch (e) {
+    return 0;
   }
-});
+}
 
-/* ✅ Logout button working (Header वाला) */
-document.getElementById("logoutTopBtn")?.addEventListener("click", ()=>{
-  // clear login
-  localStorage.removeItem("mockrise_logged_in");
-  // go login page
-  goLogin();
-});
+async function loadCounts() {
+  const L = CONFIG.blogger.labels;
+
+  $("countVideos").textContent = await countByLabel(L.videos);
+  $("countPDF").textContent = await countByLabel(L.pdf);
+  $("countTest").textContent = await countByLabel(L.weeklyTest);
+  $("countQuiz").textContent = await countByLabel(L.quiz);
+  $("countEbook").textContent = await countByLabel(L.ebook);
+  $("countCA").textContent = await countByLabel(L.currentAffairs);
+  $("countBanner").textContent = await countByLabel(L.banner);
+}
+
+(function init(){
+  // ✅ block without login
+  Auth.requireAuth();
+
+  setupSidebarToggle();
+
+  const s = Auth.getSession();
+  if ($("adminEmailTxt")) $("adminEmailTxt").textContent = s?.email || "—";
+
+  // actions
+  $("logoutBtn").addEventListener("click", () => Auth.logout());
+
+  $("openSiteBtn").addEventListener("click", () => {
+    window.open(CONFIG.websiteUrl, "_blank");
+  });
+
+  $("copySiteBtn").addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(CONFIG.websiteUrl);
+      alert("Copied ✅");
+    } catch (e) {
+      alert(CONFIG.websiteUrl);
+    }
+  });
+
+  loadCounts();
+})();
