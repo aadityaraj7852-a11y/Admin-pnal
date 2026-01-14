@@ -1,23 +1,55 @@
-.topbarRight{
+.topbarLeft{
   display:flex;
   align-items:center;
-  gap:10px;
+  gap:12px;
 }
 
+.menuCircle{
+  width:44px;
+  height:44px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background:#fff;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 10px 20px rgba(0,0,0,.04);
+}
+.menuCircle:hover{
+  border-color:rgba(10,10,194,.35);
+}
+
+.topbarBtn{
+  width:44px;
+  height:44px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#111118;
+  text-decoration:none;
+  box-shadow:0 10px 20px rgba(0,0,0,.04);
+}
+.topbarBtn:hover{
+  border-color:rgba(10,10,194,.35);
+}
+
+/* website */
 .websiteBox{
   border:1px solid var(--border);
   border-radius:18px;
   padding:14px;
   background:#fff;
 }
-
 .siteUrl{
   font-weight:950;
   font-size:14px;
   word-break:break-all;
   color:#111118;
 }
-
 .siteBtns{
   display:flex;
   gap:10px;
@@ -25,13 +57,12 @@
   flex-wrap:wrap;
 }
 
-/* ✅ Stats */
+/* stats */
 .statsGrid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
   gap:12px;
 }
-
 @media (max-width:560px){
   .statsGrid{grid-template-columns:1fr;}
 }
@@ -64,44 +95,4 @@
   font-size:26px;
   font-weight:950;
   color:#111118;
-}
-
-/* ✅ Quick buttons */
-.quickGrid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-}
-
-@media (max-width:900px){
-  .quickGrid{grid-template-columns:repeat(2,1fr);}
-}
-@media (max-width:520px){
-  .quickGrid{grid-template-columns:1fr;}
-}
-
-.quickBtn{
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:14px;
-  background:#fff;
-  font-weight:950;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  cursor:pointer;
-  transition:.15s;
-  text-decoration:none;
-  color:#111118;
-}
-
-.quickBtn:hover{
-  border-color:rgba(10,10,194,.35);
-  box-shadow:0 10px 24px rgba(0,0,0,.06);
-  transform:translateY(-1px);
-}
-
-.fullWidth{
-  grid-column:1/-1;
 }
