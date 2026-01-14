@@ -1,3 +1,9 @@
+.topbarRight{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
 .websiteBox{
   border:1px solid var(--border);
   border-radius:18px;
@@ -19,6 +25,7 @@
   flex-wrap:wrap;
 }
 
+/* ✅ Stats */
 .statsGrid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
@@ -35,6 +42,10 @@
   padding:14px;
   background:#fff;
   box-shadow:0 10px 20px rgba(0,0,0,.04);
+}
+
+.statBox.fullRow{
+  grid-column:1/-1;
 }
 
 .statLabel{
@@ -55,13 +66,7 @@
   color:#111118;
 }
 
-.topbarRight{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-/* ✅ Quick Actions */
+/* ✅ Quick buttons */
 .quickGrid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
@@ -87,9 +92,16 @@
   gap:10px;
   cursor:pointer;
   transition:.15s;
+  text-decoration:none;
+  color:#111118;
 }
 
 .quickBtn:hover{
   border-color:rgba(10,10,194,.35);
   box-shadow:0 10px 24px rgba(0,0,0,.06);
+  transform:translateY(-1px);
+}
+
+.fullWidth{
+  grid-column:1/-1;
 }
