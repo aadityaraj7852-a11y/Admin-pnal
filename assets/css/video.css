@@ -81,7 +81,21 @@
   border-color:var(--brand);
   box-shadow:0 0 0 4px rgba(10,10,194,.12);
 }
+.fileField{padding-top:14px}
 
+.createRow{
+  margin-top:10px;
+  display:flex;
+  gap:10px;
+}
+.createRow .field{flex:1}
+.btnGhost.mini{
+  height:52px;
+  padding:0 14px;
+  border-radius:18px;
+}
+
+/* Buttons */
 .actionsRow{
   display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;
 }
@@ -104,18 +118,42 @@
 }
 .btnGhost:hover{border-color:rgba(10,10,194,.35)}
 .btnGhost:active{transform:scale(.98)}
-
 .smallBtn{
-  width:52px;height:52px;border-radius:18px;
-  padding:0;justify-content:center;
+  width:52px;height:52px;border-radius:18px;padding:0;justify-content:center;
 }
 
-.tinyNote{
-  margin-top:10px;font-size:12px;font-weight:850;color:#6b7280;line-height:1.4;
+/* Progress */
+.progressWrap{
+  margin-top:12px;
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:12px;
+  background:#fff;
+}
+.progressTop{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.progressTxt{font-size:12px;font-weight:950;color:#111118}
+.progressSpeed{font-size:12px;font-weight:900;color:#6b7280}
+
+.progressBar{
+  margin-top:10px;
+  height:12px;
+  border-radius:999px;
+  background:#eef0f6;
+  overflow:hidden;
+}
+.progressFill{
+  height:100%;
+  width:0%;
+  background:var(--brand);
 }
 
+/* List */
 .searchRow{margin-top:6px;margin-bottom:10px}
-
 .postsBox{display:flex;flex-direction:column;gap:10px;margin-top:8px}
 
 .postItem{
@@ -127,19 +165,11 @@
   align-items:flex-start;
   justify-content:space-between;
 }
-
-.postLeft{display:flex;gap:10px;align-items:flex-start;min-width:0}
-.thumb{
-  width:72px;height:52px;border-radius:14px;
-  background:rgba(10,10,194,.08);
-  border:1px solid rgba(10,10,194,.12);
-  object-fit:cover;
-}
 .postMeta{min-width:0}
 .postTitle{
   font-weight:950;color:#111118;
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  max-width:260px;
+  max-width:240px;
 }
 .postSub{
   margin-top:6px;
@@ -169,10 +199,4 @@
 }
 .btnMini:hover{border-color:rgba(10,10,194,.35)}
 
-.btnDanger{
-  border-color:rgba(220,38,38,.30);
-  color:#dc2626;
-}
-.btnDanger:hover{border-color:rgba(220,38,38,.65)}
-
-.mutedSmall{font-size:12px;font-weight:850;color:#6b7280}/* page specific css (optional) */
+.mutedSmall{font-size:12px;font-weight:850;color:#6b7280}
