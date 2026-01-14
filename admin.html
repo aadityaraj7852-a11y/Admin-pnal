@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Mockrise • Admin Panel</title>
+
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+
+  <!-- Google Identity Services -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+  <link rel="stylesheet" href="./assets/style.css"/>
+</head>
+
+<body>
+  <div class="appShell">
+
+    <!-- Sidebar -->
+    <aside class="side">
+      <div class="sideTop">
+        <div class="brand">
+          <div class="logoBox">
+            <span class="material-symbols-outlined">dashboard</span>
+          </div>
+          <div>
+            <div class="brandTitle">Mockrise</div>
+            <div class="brandSub">Blogger Admin Panel</div>
+          </div>
+        </div>
+
+        <div class="userCard" id="userCard">
+          <div class="userRow">
+            <img id="userPic" class="userPic" src="https://i.ibb.co/2FsfXqM/user.png" alt="user"/>
+            <div class="min-w-0">
+              <div class="userName" id="userName">Not logged in</div>
+              <div class="userEmail" id="userEmail">—</div>
+            </div>
+          </div>
+
+          <div class="userBtns">
+            <button id="loginBtn" class="btnPrimary">
+              <span class="material-symbols-outlined">login</span>
+              Google Login
+            </button>
+            <button id="logoutBtn" class="btnGhost">
+              <span class="material-symbols-outlined">logout</span>
+              Logout
+            </button>
+          </div>
+
+          <div class="tinyNote">
+            Admin only: <b>aadityaraj7852@gmail.com</b>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="sideSectionTitle">
+          <span class="material-symbols-outlined">label</span>
+          Labels (Auto)
+        </div>
+
+        <div id="labelsBox" class="labelsBox">
+          <div class="mutedSmall">Login करके labels load होंगे…</div>
+        </div>
+
+        <div class="addLabelBox">
+          <div class="mutedSmall font-black">Quick Add (optional)</div>
+          <div class="flex gap-2 mt-2">
+            <input id="newLabelInput" class="field" placeholder="New label name (optional)" />
+            <button id="addLabelBtn" class="btnSmall">
+              <span class="material-symbols-outlined">add</span>
+            </button>
+          </div>
+          <div class="tinyNote">
+            *Blogger API label create direct नहीं करता। ये बस filter shortcuts बनाएगा ✅
+          </div>
+        </div>
+
+      </div>
+
+      <div class="sideBottom">
+        <div class="tinyNote">
+          Host: <b>admin.mockrise.com</b>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="topLeft">
+          <div class="pageTitle">Admin Panel</div>
+          <div class="pageSub" id="statusTxt">Ready</div>
+        </div>
+
+        <div class="topRight">
+          <button id="refreshBtn" class="btnGhost">
+            <span class="material-symbols-outlined">refresh</span>
+            Refresh
+          </button>
+          <a href="./index.html" class="btnGhost">
+            <span class="material-symbols-outlined">home</span>
+            Home
+          </a>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <section class="contentGrid">
+
+        <!-- Create Post -->
+        <div class="card">
+          <div class="cardHead">
+            <div>
+              <div class="cardTitle">Create New Post</div>
+              <div class="cardSub">Label select करके पोस्ट publish कर ✅</div>
+            </div>
+            <div class="pill" id="activeLabelPill">Label: —</div>
+          </div>
+
+          <div class="formGrid">
+            <div>
+              <label class="labelTxt">Post Title</label>
+              <input id="postTitle" class="field mt-2" placeholder="Ex: REET 2025 Shift 1 Answer Key" />
+            </div>
+
+            <div>
+              <label class="labelTxt">Type</label>
+              <select id="postType" class="field mt-2">
+                <option value="TEXT">TEXT</option>
+                <option value="PDF">PDF</option>
+                <option value="VIDEO">VIDEO</option>
+                <option value="QUIZ">DAILY QUIZ</option>
+                <option value="CUTOFF">CUTOFF</option>
+                <option value="OMR">OMR CHECKING</option>
+                <option value="TEST">TEST</option>
+              </select>
+            </div>
+
+            <div class="md:col-span-2">
+              <label class="labelTxt">Main Content (Text / JSON)</label>
+              <textarea id="postContent" class="fieldTextarea mt-2" rows="8" placeholder='Paste JSON like:
+{
+  "examName":"REET 2025",
+  "totalMarks":150
+}
+or write normal text...'></textarea>
+            </div>
+
+            <div>
+              <label class="labelTxt">PDF Link (optional)</label>
+              <input id="pdfLink" class="field mt-2" placeholder="https://..." />
+            </div>
+
+            <div>
+              <label class="labelTxt">Video Link (optional)</label>
+              <input id="videoLink" class="field mt-2" placeholder="https://youtube.com/..." />
+            </div>
+
+            <div class="md:col-span-2">
+              <div class="flex gap-3 flex-wrap">
+                <button id="publishBtn" class="btnPrimary">
+                  <span class="material-symbols-outlined">publish</span>
+                  Publish to Blogger
+                </button>
+
+                <button id="autoJsonBtn" class="btnGhost">
+                  <span class="material-symbols-outlined">data_object</span>
+                  Auto JSON Template
+                </button>
+
+                <button id="clearBtn" class="btnGhost">
+                  <span class="material-symbols-outlined">delete_sweep</span>
+                  Clear
+                </button>
+              </div>
+              <div class="tinyNote mt-2">
+                *Publish के लिए Google Login + Blogger scope जरूरी है ✅
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Posts list -->
+        <div class="card">
+          <div class="cardHead">
+            <div>
+              <div class="cardTitle">Posts (Selected Label)</div>
+              <div class="cardSub">List / Delete ✅</div>
+            </div>
+            <div class="pill" id="postsCountPill">0 posts</div>
+          </div>
+
+          <div id="postsBox" class="postsBox">
+            <div class="mutedSmall">Login करो और label select करो…</div>
+          </div>
+        </div>
+
+      </section>
+
+      <footer class="footer">
+        <div class="mutedSmall">
+          Mockrise • Blogger Admin Panel ✅
+        </div>
+      </footer>
+
+    </main>
+  </div>
+
+  <script type="module" src="./assets/app.js"></script>
+</body>
+</html>
