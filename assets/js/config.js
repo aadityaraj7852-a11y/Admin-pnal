@@ -1,10 +1,18 @@
 export const CONFIG = {
   BLOGGER_ID: "1505425628593992085",
-  BLOGGER_KEY: "AIzaSyCpBV7mDpohv2rcqjchBil9TsZuV5VNQIk",
-  CLIENT_ID: "294178060526-p8n98a97f69l3fa2dfap0md4phud16jp.apps.googleusercontent.com",
+  BLOGGER_KEY: "AIzaSyBaGppSDvKYBc_UGMDQ2JGmKi0V2FQa2ec",
   ADMIN_EMAIL: "aadityaraj7852@gmail.com",
-  SCOPE: "openid email profile https://www.googleapis.com/auth/blogger",
-  DEFAULT_LABELS: [
-    "Test","Video Lecture","PDF","Daily Quiz","Cutoff","OMR Checking","Notices","Results"
-  ]
+
+  WEBSITE_URL: "https://mockrise.com",
+
+  // ✅ ये labels Blogger में होने चाहिए (exact same spelling)
+  LABELS: {
+    VIDEO: "Video",
+    PDF: "Notes",
+    WEEKLY: "Weekly Test",
+    QUIZ: "Quiz",
+    EBOOK: "E-book",
+    CA: "Current Affairs",
+    BANNER: "Banner"
+  }
 };
