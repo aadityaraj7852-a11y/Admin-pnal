@@ -1,7 +1,8 @@
+/* Header */
 .cwHeader{
   position:sticky;
   top:0;
-  z-index:10;
+  z-index:20;
   background:#fff;
   border-bottom:1px solid var(--border);
   padding:14px 16px;
@@ -29,12 +30,11 @@
   color:#111118;
 }
 
-/* ✅ Ready हटाकर live बनाया */
 .cwSubLive{
   margin-top:3px;
   font-size:12px;
   font-weight:900;
-  color:#0a0ac2;
+  color:var(--brand);
   display:flex;
   align-items:center;
   gap:8px;
@@ -58,30 +58,24 @@
   justify-content:center;
   box-shadow:0 10px 20px rgba(0,0,0,.04);
 }
-.cwIconBtn:hover{
-  border-color:rgba(10,10,194,.35);
-}
+.cwIconBtn:hover{border-color:rgba(10,10,194,.35);}
 .cwIconBtn.danger{
   border-color:rgba(220,38,38,.35);
   color:#dc2626;
 }
-.cwIconBtn.danger:hover{
-  border-color:rgba(220,38,38,.65);
-}
+.cwIconBtn.danger:hover{border-color:rgba(220,38,38,.65);}
 
-/* ✅ HERO BOX (Blue) sharp corners */
+/* ✅ Hero (blue box corners NOT round) */
 .heroCard{
   grid-column:1 / -1;
   padding:18px;
   background:linear-gradient(135deg, rgba(10,10,194,.12), rgba(10,10,194,.05));
   border:1px solid rgba(10,10,194,.12);
   box-shadow:0 16px 46px rgba(0,0,0,.06);
-
-  /* ✅ round हटाया */
   border-radius:0px;
 
   display:flex;
-  align-items:stretch;
+  align-items:center;
   justify-content:space-between;
   gap:14px;
 }
@@ -103,7 +97,7 @@
   height:46px;
   padding:0 16px;
   border-radius:16px;
-  background:#0a0ac2;
+  background:var(--brand);
   color:#fff;
   text-decoration:none;
   font-weight:950;
@@ -126,9 +120,7 @@
   align-items:center;
   gap:10px;
 }
-.heroBtnGhost:hover{
-  border-color:rgba(10,10,194,.35);
-}
+.heroBtnGhost:hover{border-color:rgba(10,10,194,.35);}
 
 /* Stats */
 .statsGrid{
@@ -136,9 +128,10 @@
   grid-template-columns:repeat(2,1fr);
   gap:12px;
 }
+
 @media (max-width:560px){
   .statsGrid{grid-template-columns:1fr;}
-  .heroCard{flex-direction:column;}
+  .heroCard{flex-direction:column; align-items:flex-start;}
 }
 
 .statBox{
