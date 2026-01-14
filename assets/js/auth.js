@@ -1,67 +1,112 @@
 import { CONFIG } from "./config.js";
 
-let tokenClient=null;
-let accessToken=null;
-let userInfo=null;
+const KEY = "mockrise_admin_session_v1";
 
-function initTokenClient(){
-  tokenClient = google.accounts.oauth2.initTokenClient({
-    client_id: CONFIG.CLIENT_ID,
-    scope: CONFIG.SCOPE,
-    callback: async (resp)=>{
-      if(!resp?.access_token){ alert("❌ Login Failed"); return; }
-      accessToken = resp.access_token;
-      userInfo = await getUserInfo();
+function base64UrlDecode(str) {
+  try {
+    const pad = "=".repeat((4 - (str.length % 4)) % 4);
+    const base64 = (str + pad).replace(/-/g, "+").replace(/_/g, "/");
+    return decodeURIComponent(
+      atob(base64)
+        .split("")
+        .map(c => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
+        .join("")
+    );
+  } catch (e) {
+    return "";
+  }
+}
 
-      const email = String(userInfo?.email||"").toLowerCase().trim();
-      if(!email){ alert("❌ Email नहीं मिली (scope issue)"); logout(); return; }
+function decodeJWT(jwt) {
+  try {
+    const parts = jwt.split(".");
+    if (parts.length < 2) return null;
+    const payload = JSON.parse(base64UrlDecode(parts[1]));
+    return payload;
+  } catch (e) {
+    return null;
+  }
+}
 
-      if(email !== CONFIG.ADMIN_EMAIL.toLowerCase().trim()){
-        alert(`❌ Access Denied\n\nLogged: ${email}\nAllowed: ${CONFIG.ADMIN_EMAIL}`);
-        logout(); return;
-      }
-
-      localStorage.setItem("mockrise_token", accessToken);
-      localStorage.setItem("mockrise_user", JSON.stringify(userInfo));
-      window.dispatchEvent(new CustomEvent("mockrise:login",{detail:userInfo}));
+export const Auth = {
+  getSession() {
+    try {
+      return JSON.parse(localStorage.getItem(KEY) || "null");
+    } catch (e) {
+      return null;
     }
-  });
-}
+  },
 
-export async function login(){
-  if(!tokenClient) initTokenClient();
-  tokenClient.requestAccessToken({prompt:"consent select_account"});
-}
+  setSession(session) {
+    localStorage.setItem(KEY, JSON.stringify(session));
+  },
 
-export function logout(){
-  accessToken=null; userInfo=null;
-  localStorage.removeItem("mockrise_token");
-  localStorage.removeItem("mockrise_user");
-  window.dispatchEvent(new CustomEvent("mockrise:logout"));
-}
+  clear() {
+    localStorage.removeItem(KEY);
+  },
 
-export function getToken(){
-  if(accessToken) return accessToken;
-  accessToken = localStorage.getItem("mockrise_token") || null;
-  return accessToken;
-}
+  isLoggedIn() {
+    const s = this.getSession();
+    if (!s) return false;
+    if (!s.email) return false;
+    return true;
+  },
 
-export function getUser(){
-  if(userInfo) return userInfo;
-  try{ userInfo = JSON.parse(localStorage.getItem("mockrise_user")||"null"); }
-  catch{ userInfo=null; }
-  return userInfo;
-}
+  isAdmin() {
+    const s = this.getSession();
+    if (!s?.email) return false;
+    return s.email.toLowerCase() === CONFIG.adminEmail.toLowerCase();
+  },
 
-export function requireAuthOrRedirect(){
-  const t=getToken(); const u=getUser();
-  if(!t || !u?.email){ window.location.href="/index.html"; return false; }
-  return true;
-}
+  requireAuth() {
+    if (!this.isLoggedIn() || !this.isAdmin()) {
+      window.location.href = "./index.html";
+    }
+  },
 
-async function getUserInfo(){
-  const res = await fetch("https://openidconnect.googleapis.com/v1/userinfo",{
-    headers:{ Authorization:`Bearer ${accessToken}` }
-  });
-  return await res.json();
-}
+  async googleLoginFromCredential(credential) {
+    const payload = decodeJWT(credential);
+    if (!payload?.email) throw new Error("Google credential invalid");
+
+    const email = String(payload.email).toLowerCase();
+    if (email !== CONFIG.adminEmail.toLowerCase()) {
+      throw new Error("Access Denied (not admin)");
+    }
+
+    this.setSession({
+      provider: "google",
+      email: payload.email,
+      name: payload.name || "Admin",
+      picture: payload.picture || "",
+      time: Date.now()
+    });
+
+    return true;
+  },
+
+  backupLogin(email, pass) {
+    if (!CONFIG.backupLogin.enabled) throw new Error("Backup disabled");
+
+    if (String(email).toLowerCase() !== CONFIG.adminEmail.toLowerCase()) {
+      throw new Error("Email not allowed");
+    }
+    if (String(pass) !== CONFIG.backupLogin.password) {
+      throw new Error("Wrong password");
+    }
+
+    this.setSession({
+      provider: "backup",
+      email: CONFIG.adminEmail,
+      name: "Admin",
+      picture: "",
+      time: Date.now()
+    });
+
+    return true;
+  },
+
+  logout() {
+    this.clear();
+    window.location.href = "./index.html";
+  }
+};
