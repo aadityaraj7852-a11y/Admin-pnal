@@ -50,89 +50,17 @@
   .side.open{left:0;}
 }
 
-/* Brand */
-.brandClean{
-  margin-bottom:12px;
-}
-.brandTitleBig{
-  font-size:18px;
-  font-weight:950;
-  color:#111118;
-}
-.brandSubSmall{
-  margin-top:2px;
-  font-size:12px;
-  font-weight:850;
-  color:#6b7280;
-}
-
-/* Mini user */
-.userMini{
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:12px;
-  background:#fff;
-  box-shadow:var(--shadowSoft);
-  margin-bottom:14px;
-}
-
-.userMiniRow{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-.userMiniPic{
-  width:42px;
-  height:42px;
-  border-radius:14px;
-  object-fit:cover;
-  border:1px solid var(--border);
-}
-.userMiniInfo{flex:1;min-width:0}
-.userMiniName{
-  font-weight:950;
-  font-size:13px;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-.userMiniMail{
-  font-size:11px;
-  font-weight:850;
-  color:#6b7280;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-.userMiniBtns{
-  display:flex;
-  gap:8px;
-  margin-top:10px;
-}
-.miniBtn{
-  height:44px;
-  padding:10px 12px;
-  border-radius:16px;
-  font-size:13px;
-}
-.adminNote{
-  margin-top:8px;
-  font-size:11px;
-  font-weight:850;
-  color:#6b7280;
-}
-
-/* Menu title */
+/* ✅ Menu title */
 .sideSectionTitle{
   font-size:12px;
   font-weight:950;
   color:var(--brand);
   letter-spacing:.08em;
   text-transform:uppercase;
-  margin:10px 0;
+  margin:4px 0 10px;
 }
 
-/* Menu buttons */
+/* ✅ Menu buttons */
 .labelsBox{
   display:flex;
   flex-direction:column;
