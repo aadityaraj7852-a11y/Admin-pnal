@@ -3,100 +3,201 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-  <title>Mockrise • Video Manager</title>
+  <title>Mockrise • Videos</title>
 
-  <link rel="stylesheet" href="/assets/css/base.css"/>
-  <link rel="stylesheet" href="/assets/css/sidebar.css"/>
-  <link rel="stylesheet" href="/assets/css/video.css"/>
+  <link rel="stylesheet" href="./assets/css/base.css">
+  <link rel="stylesheet" href="./assets/css/sidebar.css">
+  <link rel="stylesheet" href="./assets/css/video.css">
 
-  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 </head>
 
 <body>
+<div id="sideOverlay" class="sideOverlay"></div>
+
 <div class="appShell">
 
-  <aside class="side">
+  <!-- Sidebar -->
+  <aside id="sideBar" class="side">
     <div class="sideTop">
-      <div class="brand">
-        <div class="logoBox"><span class="material-symbols-outlined">dashboard</span></div>
-        <div>
-          <div style="font-weight:950;">Mockrise</div>
-          <div class="mutedSmall">Admin Panel</div>
-        </div>
+
+      <div class="sideSectionTitle">Menu</div>
+
+      <div class="labelsBox" id="menuBox">
+        <a class="labelBtn" href="./home.html">
+          <span><i class="fa-solid fa-gauge-high"></i> Dashboard</span>
+          <span class="badge">Home</span>
+        </a>
+
+        <a class="labelBtn labelBtnActive" href="./video.html">
+          <span><i class="fa-solid fa-video"></i> Videos</span>
+          <span class="badge">Now</span>
+        </a>
+
+        <a class="labelBtn" href="./pdf.html">
+          <span><i class="fa-solid fa-file-pdf"></i> Notes PDF</span>
+          <span class="badge">Go</span>
+        </a>
+
+        <a class="labelBtn" href="./weeklytest.html">
+          <span><i class="fa-solid fa-calendar-week"></i> Weekly Test</span>
+          <span class="badge">Go</span>
+        </a>
+
+        <a class="labelBtn" href="./quiz.html">
+          <span><i class="fa-solid fa-bolt"></i> Quiz</span>
+          <span class="badge">Go</span>
+        </a>
+
+        <a class="labelBtn" href="./ebook.html">
+          <span><i class="fa-solid fa-book"></i> E-book</span>
+          <span class="badge">Go</span>
+        </a>
+
+        <a class="labelBtn" href="./current-affairs.html">
+          <span><i class="fa-solid fa-newspaper"></i> Current Affairs</span>
+          <span class="badge">Go</span>
+        </a>
+
+        <a class="labelBtn" href="./banner.html">
+          <span><i class="fa-regular fa-images"></i> Baners</span>
+          <span class="badge">Go</span>
+        </a>
       </div>
 
-      <div class="userCard">
-        <div class="userRow">
-          <img id="userPic" class="userPic" src="https://i.ibb.co/2FsfXqM/user.png" alt="user"/>
-          <div style="min-width:0;">
-            <div id="userName" class="userName">-</div>
-            <div id="userEmail" class="userEmail">-</div>
-          </div>
-        </div>
-
-        <div class="userBtns">
-          <a class="btnGhost" href="/home.html"><span class="material-symbols-outlined">home</span> Home</a>
-          <button id="logoutBtn" class="btnGhost"><span class="material-symbols-outlined">logout</span> Logout</button>
-        </div>
-      </div>
-
-      <div class="labelsBox" id="labelsBox"></div>
-
-      <div style="margin-top:14px;display:grid;gap:10px;">
-        <a class="btnGhost" href="/pdf.html">📄 PDF</a>
-        <a class="btnGhost" href="/video.html">🎥 Video</a>
-        <a class="btnGhost" href="/image.html">🖼️ Image</a>
-        <a class="btnGhost" href="/test.html">📝 Test/Quiz</a>
-        <a class="btnGhost" href="/cutoff.html">📊 Cutoff</a>
-        <a class="btnGhost" href="/omr.html">✅ OMR</a>
-      </div>
     </div>
 
-    <div class="sideBottom">
-      <div class="mutedSmall">admin.mockrise.com ✅</div>
-    </div>
+    <div class="sideBottom">Mockrise</div>
   </aside>
 
+  <!-- Main -->
   <main class="main">
-    <header class="topbar">
-      <div>
-        <div style="font-weight:950;font-size:18px;">Video Manager</div>
-        <div class="mutedSmall" id="statusTxt">Ready</div>
+
+    <!-- Header -->
+    <header class="cwHeader">
+      <div class="cwLeft">
+        <button class="cwIconBtn" id="toggleMenu" title="Menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <div class="cwTitleWrap">
+          <div class="cwTitle">Videos</div>
+          <div class="cwSubLive">
+            <i class="fa-solid fa-signal"></i>
+            <span>Live</span>
+          </div>
+        </div>
       </div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;">
-        <a class="btnGhost" href="/index.html">Login</a>
+
+      <div class="cwRight">
+        <button class="cwIconBtn danger" id="logoutTopBtn" title="Logout">
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </button>
       </div>
     </header>
 
-    <section class="content">
+    <section class="contentGrid">
+
+      <!-- Add Video -->
       <div class="card">
-  <h3 style="margin:0;font-weight:950;">Video Publish</h3>
-  <p class="mutedSmall">YouTube link या Google Drive video link paste करो ✅ Auto embed होगा 🔥</p>
+        <div class="cardHead">
+          <div class="cardTitle">
+            <i class="fa-solid fa-circle-plus"></i>
+            Add Video
+          </div>
 
-  <label class="mutedSmall" style="display:block;margin-top:12px;">Title</label>
-  <input id="title" class="field" placeholder="Video Title"/>
+          <div class="pill" id="writeStatus">
+            <i class="fa-solid fa-lock"></i>
+            Write Locked
+          </div>
+        </div>
 
-  <label class="mutedSmall" style="display:block;margin-top:12px;">Video Link</label>
-  <input id="mainLink" class="field" placeholder="YouTube / Drive link"/>
+        <div class="formGrid">
+          <div>
+            <div class="labelTxt">Title</div>
+            <input id="vTitle" class="field" placeholder="Video title">
+          </div>
 
-  <label class="mutedSmall" style="display:block;margin-top:12px;">Description (optional)</label>
-  <textarea id="desc" class="textarea" rows="4" placeholder="Short note..."></textarea>
+          <div>
+            <div class="labelTxt">Class / Tag</div>
+            <input id="vClass" class="field" placeholder="Class 1 / REET / etc">
+          </div>
 
-  <button id="publishBtn" class="btnPrimary" style="margin-top:12px;">
-    <span class="material-symbols-outlined">smart_display</span> Publish Video
-  </button>
-</div>
-      <div class="card">
-        <h3 style="margin:0;font-weight:950;">Latest Posts (Active Label)</h3>
-        <p class="mutedSmall">Label sidebar से change होगा ✅</p>
-        <div id="postsBox" style="margin-top:10px;display:grid;gap:10px;"></div>
+          <div>
+            <div class="labelTxt">Video URL</div>
+            <input id="vUrl" class="field" placeholder="https://youtube.com/...">
+          </div>
+
+          <div>
+            <div class="labelTxt">Thumbnail URL</div>
+            <input id="vThumb" class="field" placeholder="https://...jpg">
+          </div>
+
+          <div>
+            <div class="labelTxt">Label</div>
+            <select id="vLabel" class="field">
+              <option value="Video" selected>Video</option>
+              <option value="REET Video">REET Video</option>
+              <option value="Class Video">Class Video</option>
+            </select>
+          </div>
+
+          <div>
+            <div class="labelTxt">Visibility</div>
+            <select id="vVis" class="field">
+              <option value="public" selected>Public</option>
+              <option value="draft">Draft</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="actionsRow">
+          <button id="btnPublish" class="btnPrimary">
+            <i class="fa-solid fa-upload"></i>
+            Publish
+          </button>
+
+          <button id="btnClear" class="btnGhost">
+            <i class="fa-solid fa-rotate"></i>
+            Clear
+          </button>
+        </div>
+
+        <div class="tinyNote" id="hintTxt">
+          Publish enable करने के लिए Blogger write token चाहिए (next step मैं दे दूँगा).
+        </div>
       </div>
-    </section>
-  </main>
 
+      <!-- Manage Videos -->
+      <div class="card">
+        <div class="cardHead">
+          <div class="cardTitle">
+            <i class="fa-solid fa-list"></i>
+            Manage
+          </div>
+
+          <button id="btnRefresh" class="btnGhost smallBtn">
+            <i class="fa-solid fa-arrows-rotate"></i>
+          </button>
+        </div>
+
+        <div class="searchRow">
+          <input id="qSearch" class="field" placeholder="Search video...">
+        </div>
+
+        <div class="postsBox" id="listBox">
+          <div class="mutedSmall">Loading...</div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
 </div>
 
-<script type="module" src="/assets/js/pages/video.js"></script>
+<script type="module" src="./assets/js/config.js"></script>
+<script type="module" src="./assets/js/auth.js"></script>
+<script type="module" src="./assets/js/pages/video.js"></script>
+
 </body>
 </html>
