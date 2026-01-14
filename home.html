@@ -8,7 +8,7 @@
   <!-- Font -->
   <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 
-  <!-- ✅ Font Awesome -->
+  <!-- ✅ Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
   <!-- CSS -->
@@ -18,12 +18,17 @@
 </head>
 
 <body>
+
+<!-- ✅ Mobile Overlay -->
+<div class="sideOverlay" id="sideOverlay"></div>
+
 <div class="appShell">
 
-  <!-- ✅ Sidebar -->
+  <!-- ✅ Sidebar (CoprepEdu style) -->
   <aside class="side" id="sideBar">
     <div class="sideTop">
 
+      <!-- Brand -->
       <div class="brand">
         <div class="logoBox"><i class="fa-solid fa-layer-group"></i></div>
         <div>
@@ -35,7 +40,7 @@
       <!-- User Card -->
       <div class="userCard">
         <div class="userRow">
-          <img class="userPic" id="userPic" src="https://i.imgur.com/4M34hi2.png" alt="">
+          <img class="userPic" id="userPic" src="https://i.imgur.com/4M34hi2.png" alt="user">
           <div style="min-width:0">
             <div class="userName" id="userName">Not logged in</div>
             <div class="userEmail" id="userEmail">—</div>
@@ -59,15 +64,19 @@
         </div>
       </div>
 
-      <div class="divider"></div>
+      <!-- Search -->
+      <div class="sideSearch">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input id="sideSearchInput" placeholder="Search menu..." />
+      </div>
 
-      <!-- ✅ Menu -->
       <div class="sideSectionTitle">
         <i class="fa-solid fa-bars-staggered"></i>
         Menu
       </div>
 
-      <div class="labelsBox">
+      <!-- Menu -->
+      <div class="labelsBox" id="menuBox">
 
         <a class="labelBtn labelBtnActive" href="./home.html">
           <span><i class="fa-solid fa-gauge-high"></i> Dashboard</span>
@@ -114,14 +123,14 @@
     </div>
 
     <div class="sideBottom">
-      <div class="mutedSmall">Mockrise ✅</div>
+      Mockrise ✅
     </div>
   </aside>
 
   <!-- ✅ Main -->
   <main class="main">
 
-    <!-- Topbar -->
+    <!-- ✅ Topbar -->
     <div class="topbar">
       <div>
         <div class="pageTitle">Dashboard</div>
@@ -135,9 +144,10 @@
       </div>
     </div>
 
+    <!-- ✅ Content -->
     <section class="contentGrid">
 
-      <!-- ✅ Website Card -->
+      <!-- Website card -->
       <div class="card">
         <div class="cardHead">
           <div>
@@ -168,7 +178,7 @@
         </div>
       </div>
 
-      <!-- ✅ Total Content -->
+      <!-- Total content -->
       <div class="card">
         <div class="cardHead">
           <div>
@@ -209,7 +219,7 @@
             <div class="statValue" id="statCA">0</div>
           </div>
 
-          <div class="statBox" style="grid-column:1/-1">
+          <div class="statBox fullRow">
             <div class="statLabel"><i class="fa-regular fa-images"></i> Baner</div>
             <div class="statValue" id="statBanner">0</div>
           </div>
@@ -220,8 +230,8 @@
         </div>
       </div>
 
-      <!-- ✅ Quick Actions -->
-      <div class="card" style="grid-column:1/-1">
+      <!-- Quick Actions -->
+      <div class="card fullWidth">
         <div class="cardHead">
           <div>
             <div class="cardTitle"><i class="fa-solid fa-wand-magic-sparkles"></i> Quick Actions</div>
@@ -243,7 +253,6 @@
 
     </section>
 
-    <!-- ✅ Footer हटाया जैसा तूने बोला -->
   </main>
 
 </div>
