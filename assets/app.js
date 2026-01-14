@@ -416,3 +416,69 @@ async function afterLoginLoad(){
     if(activeLabel){
       await loadPostsByLabel(activeLabel);
     }
+
+    setStatus("Ready ✅", "ok");
+  }catch(e){
+    console.log(e);
+  }
+}
+
+// -----------------------------
+// Events
+// -----------------------------
+loginBtn.onclick = async ()=>{
+  try{
+    setStatus("Opening Google login...", "warn");
+    await requestToken();
+  }catch(e){
+    console.log(e);
+    setStatus("Login failed", "err");
+  }
+};
+
+logoutBtn.onclick = ()=>{
+  accessToken = null;
+  loggedUser = null;
+  activeLabel = null;
+
+  renderUser();
+  labelsBox.innerHTML = `<div class="mutedSmall">Logged out ✅</div>`;
+  postsBox.innerHTML = `<div class="mutedSmall">Logged out ✅</div>`;
+  activeLabelPill.textContent = `Label: —`;
+  postsCountPill.textContent = `0 posts`;
+  setStatus("Logged out ✅", "ok");
+};
+
+refreshBtn.onclick = async ()=>{
+  if(!accessToken){
+    alert("Login first ✅");
+    return;
+  }
+  await afterLoginLoad();
+};
+
+publishBtn.onclick = publishPost;
+autoJsonBtn.onclick = autoTemplate;
+clearBtn.onclick = clearForm;
+
+addLabelBtn.onclick = ()=>{
+  const lb = newLabelInput.value.trim();
+  if(!lb) return;
+
+  if(!labelShortcuts.includes(lb)){
+    labelShortcuts.unshift(lb);
+  }
+  newLabelInput.value = "";
+
+  if(!activeLabel){
+    activeLabel = lb;
+    activeLabelPill.textContent = `Label: ${activeLabel}`;
+  }
+
+  renderLabels();
+  setStatus("Label shortcut added ✅", "ok");
+};
+
+// Init
+setStatus("Ready (Login to continue)", "warn");
+renderUser();
