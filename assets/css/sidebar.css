@@ -1,4 +1,14 @@
-/* Sidebar base */
+/* ✅ Overlay */
+.sideOverlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.35);
+  z-index:50;
+}
+.sideOverlay.show{display:block;}
+
+/* ✅ Sidebar */
 .side{
   background:#fff;
   border-right:1px solid var(--border);
@@ -12,20 +22,37 @@
 }
 
 .sideTop{
-  padding:18px;
+  padding:16px;
   overflow:auto;
 }
 
 .sideBottom{
-  padding:14px 18px;
+  padding:12px 16px;
   border-top:1px solid var(--border);
   font-weight:900;
   color:#6b7280;
+  font-size:12px;
+}
+
+/* ✅ Mobile slide sidebar */
+@media (max-width:980px){
+  .side{
+    position:fixed;
+    left:-360px;
+    top:0;
+    height:100dvh;
+    width:320px;
+    z-index:60;
+    transition:.25s ease;
+    box-shadow:0 20px 60px rgba(0,0,0,.25);
+    border-right:none;
+  }
+  .side.open{left:0;}
 }
 
 /* Brand */
 .brandClean{
-  margin-bottom:14px;
+  margin-bottom:12px;
 }
 .brandTitleBig{
   font-size:18px;
@@ -33,24 +60,26 @@
   color:#111118;
 }
 .brandSubSmall{
+  margin-top:2px;
   font-size:12px;
-  font-weight:900;
+  font-weight:850;
   color:#6b7280;
 }
 
-/* User mini card */
+/* Mini user */
 .userMini{
   border:1px solid var(--border);
   border-radius:18px;
-  padding:14px;
-  box-shadow:var(--shadow);
+  padding:12px;
   background:#fff;
-  margin-bottom:18px;
+  box-shadow:var(--shadowSoft);
+  margin-bottom:14px;
 }
+
 .userMiniRow{
   display:flex;
-  gap:10px;
   align-items:center;
+  gap:10px;
 }
 .userMiniPic{
   width:42px;
@@ -59,21 +88,17 @@
   object-fit:cover;
   border:1px solid var(--border);
 }
-.userMiniInfo{
-  flex:1;
-  min-width:0;
-}
+.userMiniInfo{flex:1;min-width:0}
 .userMiniName{
   font-weight:950;
-  font-size:14px;
-  color:#111118;
+  font-size:13px;
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
 }
 .userMiniMail{
-  font-size:12px;
-  font-weight:900;
+  font-size:11px;
+  font-weight:850;
   color:#6b7280;
   white-space:nowrap;
   overflow:hidden;
@@ -81,31 +106,33 @@
 }
 .userMiniBtns{
   display:flex;
-  gap:10px;
-  margin-top:12px;
-  flex-wrap:wrap;
+  gap:8px;
+  margin-top:10px;
+}
+.miniBtn{
+  height:44px;
+  padding:10px 12px;
+  border-radius:16px;
+  font-size:13px;
 }
 .adminNote{
-  margin-top:10px;
-  font-size:12px;
-  font-weight:900;
+  margin-top:8px;
+  font-size:11px;
+  font-weight:850;
   color:#6b7280;
 }
 
-/* Section title */
+/* Menu title */
 .sideSectionTitle{
   font-size:12px;
   font-weight:950;
-  color:#0a0ac2;
-  display:flex;
-  align-items:center;
-  gap:8px;
+  color:var(--brand);
   letter-spacing:.08em;
   text-transform:uppercase;
-  margin-bottom:10px;
+  margin:10px 0;
 }
 
-/* Menu list */
+/* Menu buttons */
 .labelsBox{
   display:flex;
   flex-direction:column;
@@ -114,8 +141,6 @@
 
 .labelBtn{
   width:100%;
-  text-decoration:none;
-  color:#111118;
   border:1px solid var(--border);
   background:#fff;
   border-radius:16px;
@@ -134,10 +159,13 @@
   gap:10px;
 }
 
-.labelBtn:hover{
-  border-color:rgba(10,10,194,.35);
+.labelBtn i{
+  width:20px;
+  display:inline-flex;
+  justify-content:center;
 }
 
+.labelBtn:hover{border-color:rgba(10,10,194,.35);}
 .labelBtnActive{
   border-color:rgba(10,10,194,.65);
   box-shadow:0 0 0 4px rgba(10,10,194,.10);
@@ -146,39 +174,10 @@
 .badge{
   font-size:11px;
   font-weight:950;
-  color:#0a0ac2;
+  color:var(--brand);
   background:rgba(10,10,194,.08);
   border:1px solid rgba(10,10,194,.12);
   padding:4px 10px;
   border-radius:999px;
   white-space:nowrap;
-}
-
-/* ✅ Overlay */
-.sideOverlay{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.35);
-  z-index:50;
-}
-.sideOverlay.show{
-  display:block;
-}
-
-/* ✅ Mobile slide */
-@media (max-width:980px){
-  .side{
-    position:fixed;
-    left:-360px;
-    top:0;
-    height:100dvh;
-    width:320px;
-    z-index:60;
-    transition:0.25s ease;
-    box-shadow:0 20px 60px rgba(0,0,0,.25);
-  }
-  .side.open{
-    left:0;
-  }
 }
