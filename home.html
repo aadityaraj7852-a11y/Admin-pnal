@@ -28,7 +28,6 @@
         <div class="brandSubSmall">Admin Panel</div>
       </div>
 
-      <!-- Mini User -->
       <div class="userMini">
         <div class="userMiniRow">
           <img class="userMiniPic" id="userPic" src="https://i.imgur.com/4M34hi2.png" alt="user">
@@ -107,7 +106,6 @@
   <!-- Main -->
   <main class="main">
 
-    <!-- Header -->
     <header class="cwHeader">
       <div class="cwLeft">
         <button class="cwIconBtn" id="toggleMenu" title="Menu">
@@ -116,8 +114,6 @@
 
         <div class="cwTitleWrap">
           <div class="cwTitle">Dashboard</div>
-
-          <!-- ✅ Ready हटाया, Live icon रखा -->
           <div class="cwSubLive">
             <i class="fa-solid fa-signal"></i>
             <span>Live</span>
@@ -126,23 +122,20 @@
       </div>
 
       <div class="cwRight">
-        <!-- ✅ Web icon हटाया -->
         <button class="cwIconBtn danger" id="logoutTopBtn" title="Logout">
           <i class="fa-solid fa-right-from-bracket"></i>
         </button>
       </div>
     </header>
 
-    <!-- Content -->
     <section class="contentGrid">
 
-      <!-- ✅ Blue box corners sharp -->
       <div class="heroCard">
-        <div class="heroText">
+        <div>
           <div class="heroHeading">Website</div>
 
           <div class="heroActions">
-            <a class="heroBtnPrimary" id="openSiteBtn" href="https://mockrise.com" target="_blank">
+            <a class="heroBtnPrimary" id="openSiteBtn" target="_blank">
               <i class="fa-solid fa-arrow-up-right-from-square"></i>
               Open Website
             </a>
@@ -155,7 +148,6 @@
         </div>
       </div>
 
-      <!-- ✅ Card title हटाया -->
       <div class="card">
         <div class="statsGrid">
           <div class="statBox">
@@ -201,54 +193,6 @@
 
 </div>
 
-<script type="module">
-  // ✅ Sidebar toggle FIX (अब काम करेगा)
-  const sideBar = document.getElementById("sideBar");
-  const overlay = document.getElementById("sideOverlay");
-  const toggleMenu = document.getElementById("toggleMenu");
-
-  function openSidebar(){
-    sideBar.classList.add("open");
-    overlay.classList.add("show");
-    document.body.style.overflow = "hidden";
-  }
-  function closeSidebar(){
-    sideBar.classList.remove("open");
-    overlay.classList.remove("show");
-    document.body.style.overflow = "";
-  }
-
-  toggleMenu?.addEventListener("click", ()=>{
-    if(sideBar.classList.contains("open")) closeSidebar();
-    else openSidebar();
-  });
-
-  overlay?.addEventListener("click", closeSidebar);
-
-  // ✅ Top logout => sidebar logout click
-  document.getElementById("logoutTopBtn")?.addEventListener("click", ()=>{
-    document.getElementById("logoutBtn")?.click();
-  });
-
-  // ✅ Copy link (text दिखाए बिना काम करेगा)
-  document.getElementById("copySiteBtn")?.addEventListener("click", async ()=>{
-    const url = "https://mockrise.com";
-    try{
-      await navigator.clipboard.writeText(url);
-      alert("Copied");
-    }catch(e){
-      prompt("Copy this:", url);
-    }
-  });
-
-  // ✅ Mobile: menu click पर sidebar auto close
-  document.querySelectorAll("#menuBox a").forEach(a=>{
-    a.addEventListener("click", ()=> closeSidebar());
-  });
-
-</script>
-
 <script type="module" src="./assets/js/pages/home.js"></script>
-
 </body>
 </html>
