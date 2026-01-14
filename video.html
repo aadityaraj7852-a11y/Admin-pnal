@@ -5,21 +5,18 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>Mockrise • Video Manager</title>
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
-
-  <!-- Font Awesome (No emoji ✅) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
-  <!-- CSS -->
   <link rel="stylesheet" href="./assets/css/base.css" />
   <link rel="stylesheet" href="./assets/css/sidebar.css" />
   <link rel="stylesheet" href="./assets/css/video.css" />
 </head>
 
 <body>
-  <!-- Mobile Topbar -->
+
+  <!-- Topbar -->
   <header class="topbar">
     <button class="iconBtn" id="menuBtn" title="Menu">
       <i class="fa-solid fa-bars"></i>
@@ -35,10 +32,8 @@
     </button>
   </header>
 
-  <!-- Sidebar Overlay -->
   <div class="overlay" id="overlay"></div>
 
-  <!-- Layout -->
   <div class="shell">
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
@@ -53,45 +48,14 @@
       </div>
 
       <nav class="sbMenu">
-        <a class="sbItem" href="./home.html">
-          <i class="fa-solid fa-gauge-high"></i>
-          <span>Dashboard</span>
-        </a>
-
-        <a class="sbItem active" href="./video.html">
-          <i class="fa-solid fa-video"></i>
-          <span>Video Manager</span>
-        </a>
-
-        <a class="sbItem" href="./pdf.html">
-          <i class="fa-solid fa-file-pdf"></i>
-          <span>Notes PDF</span>
-        </a>
-
-        <a class="sbItem" href="./test.html">
-          <i class="fa-solid fa-pen-to-square"></i>
-          <span>Weekly Test</span>
-        </a>
-
-        <a class="sbItem" href="./quiz.html">
-          <i class="fa-solid fa-bolt"></i>
-          <span>Quiz</span>
-        </a>
-
-        <a class="sbItem" href="./ebook.html">
-          <i class="fa-solid fa-book"></i>
-          <span>E-book</span>
-        </a>
-
-        <a class="sbItem" href="./ca.html">
-          <i class="fa-solid fa-newspaper"></i>
-          <span>Current Affairs</span>
-        </a>
-
-        <a class="sbItem" href="./banner.html">
-          <i class="fa-solid fa-image"></i>
-          <span>Banner</span>
-        </a>
+        <a class="sbItem" href="./home.html"><i class="fa-solid fa-gauge-high"></i><span>Dashboard</span></a>
+        <a class="sbItem active" href="./video.html"><i class="fa-solid fa-video"></i><span>Video Manager</span></a>
+        <a class="sbItem" href="./pdf.html"><i class="fa-solid fa-file-pdf"></i><span>Notes PDF</span></a>
+        <a class="sbItem" href="./test.html"><i class="fa-solid fa-pen-to-square"></i><span>Weekly Test</span></a>
+        <a class="sbItem" href="./quiz.html"><i class="fa-solid fa-bolt"></i><span>Quiz</span></a>
+        <a class="sbItem" href="./ebook.html"><i class="fa-solid fa-book"></i><span>E-book</span></a>
+        <a class="sbItem" href="./ca.html"><i class="fa-solid fa-newspaper"></i><span>Current Affairs</span></a>
+        <a class="sbItem" href="./banner.html"><i class="fa-solid fa-image"></i><span>Banner</span></a>
       </nav>
 
       <div class="sbFooter">
@@ -102,15 +66,13 @@
 
     <!-- Main -->
     <main class="main">
-      <!-- Upload Card -->
+
+      <!-- Create Post -->
       <section class="card">
         <div class="cardHead">
           <div>
-            <div class="cardTitle">
-              <i class="fa-solid fa-cloud-arrow-up"></i>
-              Upload Video
-            </div>
-            <div class="cardSub">Device से वीडियो चुनो और Blogger में publish करो</div>
+            <div class="cardTitle"><i class="fa-brands fa-youtube"></i> YouTube Video Publish</div>
+            <div class="cardSub">YouTube लिंक डालो और Blogger पर publish करो</div>
           </div>
 
           <div class="pill" id="livePill">
@@ -122,7 +84,7 @@
         <div class="grid2">
           <div>
             <label class="lbl">Title</label>
-            <input class="field" id="titleInp" placeholder="Ex: REET GK Class 1" />
+            <input class="field" id="titleInp" placeholder="Ex: REET GK Class 01" />
           </div>
 
           <div>
@@ -136,22 +98,12 @@
           </div>
         </div>
 
-        <label class="lbl mt14">Choose video file</label>
-        <input type="file" id="fileInp" class="fileField" accept="video/*" />
-
-        <div class="progressWrap">
-          <div class="progressTop">
-            <div class="progressTxt" id="progTxt">0% • 0 MB / 0 MB</div>
-            <div class="progressTxt" id="speedTxt">0 KB/s</div>
-          </div>
-          <div class="bar">
-            <div class="barFill" id="barFill"></div>
-          </div>
-        </div>
+        <label class="lbl mt14">YouTube Link</label>
+        <input class="field" id="ytInp" placeholder="Paste YouTube link (https://youtube.com/...)" />
 
         <div class="btnRow">
-          <button class="btnPrimary" id="uploadBtn" type="button">
-            <i class="fa-solid fa-upload"></i> Upload & Submit
+          <button class="btnPrimary" id="publishBtn" type="button">
+            <i class="fa-solid fa-paper-plane"></i> Publish
           </button>
 
           <button class="btnGhost" id="clearBtn" type="button">
@@ -161,18 +113,15 @@
 
         <div class="noteMini">
           <i class="fa-solid fa-shield-halved"></i>
-          सिर्फ Admin upload कर सकता है ✅
+          सिर्फ Admin publish कर सकता है
         </div>
       </section>
 
-      <!-- List Card -->
+      <!-- List -->
       <section class="card">
         <div class="cardHead">
           <div>
-            <div class="cardTitle">
-              <i class="fa-solid fa-list"></i>
-              Uploaded Videos (Label-wise)
-            </div>
+            <div class="cardTitle"><i class="fa-solid fa-list"></i> Uploaded Videos (Label-wise)</div>
             <div class="cardSub">Label select करके videos देखो</div>
           </div>
 
@@ -196,13 +145,12 @@
           <div class="emptyTxt">Loading...</div>
         </div>
       </section>
+
     </main>
   </div>
 
-  <!-- Toast -->
   <div class="toast" id="toast"></div>
 
-  <!-- Scripts -->
   <script src="./assets/js/config.js"></script>
   <script src="./assets/js/ui.js"></script>
   <script src="./assets/js/auth.js"></script>
