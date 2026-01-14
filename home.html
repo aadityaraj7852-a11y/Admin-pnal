@@ -28,7 +28,7 @@
         <div class="logoBox"><i class="fa-solid fa-layer-group"></i></div>
         <div>
           <div class="brandTitle">Mockrise</div>
-          <div class="brandSub">Blogger Admin Panel</div>
+          <div class="brandSub">Admin Panel</div>
         </div>
       </div>
 
@@ -61,7 +61,7 @@
 
       <div class="divider"></div>
 
-      <!-- Main Menu -->
+      <!-- ✅ Menu -->
       <div class="sideSectionTitle">
         <i class="fa-solid fa-bars-staggered"></i>
         Menu
@@ -75,55 +75,46 @@
         </a>
 
         <a class="labelBtn" href="./video.html">
-          <span><i class="fa-solid fa-video"></i> Video Manager</span>
+          <span><i class="fa-solid fa-video"></i> Videos</span>
           <span class="badge" id="countVideo">0</span>
         </a>
 
         <a class="labelBtn" href="./pdf.html">
-          <span><i class="fa-solid fa-file-pdf"></i> PDF Manager</span>
+          <span><i class="fa-solid fa-file-pdf"></i> Notes PDF</span>
           <span class="badge" id="countPdf">0</span>
         </a>
 
-        <a class="labelBtn" href="./image.html">
-          <span><i class="fa-regular fa-image"></i> Image Manager</span>
-          <span class="badge" id="countImage">0</span>
+        <a class="labelBtn" href="./weeklytest.html">
+          <span><i class="fa-solid fa-calendar-week"></i> Weekly Test</span>
+          <span class="badge" id="countWeekly">0</span>
         </a>
 
-        <a class="labelBtn" href="./test.html">
-          <span><i class="fa-solid fa-pen-to-square"></i> Test / Quiz</span>
-          <span class="badge" id="countTest">0</span>
+        <a class="labelBtn" href="./quiz.html">
+          <span><i class="fa-solid fa-bolt"></i> Quiz</span>
+          <span class="badge" id="countQuiz">0</span>
         </a>
 
-        <a class="labelBtn" href="./cutoff.html">
-          <span><i class="fa-solid fa-chart-line"></i> Cutoff</span>
-          <span class="badge">Live</span>
+        <a class="labelBtn" href="./ebook.html">
+          <span><i class="fa-solid fa-book"></i> E-book</span>
+          <span class="badge" id="countEbook">0</span>
         </a>
 
-        <a class="labelBtn" href="./omr.html">
-          <span><i class="fa-solid fa-list-check"></i> OMR Checking</span>
-          <span class="badge">Tool</span>
+        <a class="labelBtn" href="./current-affairs.html">
+          <span><i class="fa-solid fa-newspaper"></i> Current Affairs</span>
+          <span class="badge" id="countCA">0</span>
         </a>
 
-      </div>
+        <a class="labelBtn" href="./banner.html">
+          <span><i class="fa-regular fa-images"></i> Baner</span>
+          <span class="badge" id="countBanner">0</span>
+        </a>
 
-      <div class="divider"></div>
-
-      <!-- Auto Labels -->
-      <div class="sideSectionTitle">
-        <i class="fa-solid fa-tags"></i>
-        Labels (Auto)
-      </div>
-
-      <input id="labelSearch" class="field" placeholder="Search label..." />
-
-      <div class="postsBox" id="labelsList">
-        <div class="mutedSmall">Loading labels...</div>
       </div>
 
     </div>
 
     <div class="sideBottom">
-      <div class="mutedSmall">Mockrise • Admin Panel ✅</div>
+      <div class="mutedSmall">Mockrise ✅</div>
     </div>
   </aside>
 
@@ -146,7 +137,7 @@
 
     <section class="contentGrid">
 
-      <!-- Website Card -->
+      <!-- ✅ Website Card -->
       <div class="card">
         <div class="cardHead">
           <div>
@@ -158,11 +149,13 @@
 
         <div class="websiteBox">
           <div class="siteUrl" id="siteUrl">https://mockrise.com</div>
+
           <div class="siteBtns">
             <a class="btnPrimary" id="openSiteBtn" target="_blank">
               <i class="fa-solid fa-arrow-up-right-from-square"></i>
               Open Website
             </a>
+
             <button class="btnGhost" id="copySiteBtn">
               <i class="fa-regular fa-copy"></i>
               Copy
@@ -175,12 +168,12 @@
         </div>
       </div>
 
-      <!-- Stats Card -->
+      <!-- ✅ Total Content -->
       <div class="card">
         <div class="cardHead">
           <div>
             <div class="cardTitle"><i class="fa-solid fa-chart-pie"></i> Total Content</div>
-            <div class="cardSub">Labels से auto count</div>
+            <div class="cardSub">Auto count (Blogger)</div>
           </div>
           <span class="pill"><i class="fa-solid fa-robot"></i> Auto</span>
         </div>
@@ -190,17 +183,35 @@
             <div class="statLabel"><i class="fa-solid fa-video"></i> Videos</div>
             <div class="statValue" id="statVideo">0</div>
           </div>
+
           <div class="statBox">
-            <div class="statLabel"><i class="fa-solid fa-file-pdf"></i> PDFs</div>
+            <div class="statLabel"><i class="fa-solid fa-file-pdf"></i> Notes PDF</div>
             <div class="statValue" id="statPdf">0</div>
           </div>
+
           <div class="statBox">
-            <div class="statLabel"><i class="fa-regular fa-image"></i> Images</div>
-            <div class="statValue" id="statImage">0</div>
+            <div class="statLabel"><i class="fa-solid fa-calendar-week"></i> Weekly Test</div>
+            <div class="statValue" id="statWeekly">0</div>
           </div>
+
           <div class="statBox">
-            <div class="statLabel"><i class="fa-solid fa-pen-to-square"></i> Tests</div>
-            <div class="statValue" id="statTest">0</div>
+            <div class="statLabel"><i class="fa-solid fa-bolt"></i> Quiz</div>
+            <div class="statValue" id="statQuiz">0</div>
+          </div>
+
+          <div class="statBox">
+            <div class="statLabel"><i class="fa-solid fa-book"></i> E-book</div>
+            <div class="statValue" id="statEbook">0</div>
+          </div>
+
+          <div class="statBox">
+            <div class="statLabel"><i class="fa-solid fa-newspaper"></i> Current Affairs</div>
+            <div class="statValue" id="statCA">0</div>
+          </div>
+
+          <div class="statBox" style="grid-column:1/-1">
+            <div class="statLabel"><i class="fa-regular fa-images"></i> Baner</div>
+            <div class="statValue" id="statBanner">0</div>
           </div>
         </div>
 
@@ -209,42 +220,30 @@
         </div>
       </div>
 
-      <!-- Latest Posts -->
+      <!-- ✅ Quick Actions -->
       <div class="card" style="grid-column:1/-1">
         <div class="cardHead">
           <div>
-            <div class="cardTitle"><i class="fa-solid fa-clock"></i> Latest Posts</div>
-            <div class="cardSub">Recent content (Label-wise)</div>
+            <div class="cardTitle"><i class="fa-solid fa-wand-magic-sparkles"></i> Quick Actions</div>
+            <div class="cardSub">एक tap में manager खोल</div>
           </div>
-          <span class="pill" id="activeLabelPill"><i class="fa-solid fa-filter"></i> All</span>
+          <span class="pill"><i class="fa-solid fa-arrow-right"></i> Go</span>
         </div>
 
-        <div class="formGrid">
-          <div>
-            <div class="labelTxt">Active Label</div>
-            <select id="activeLabelSelect" class="field">
-              <option value="">All Labels</option>
-            </select>
-          </div>
-
-          <div>
-            <div class="labelTxt">Search Post</div>
-            <input id="postSearch" class="field" placeholder="Type title..." />
-          </div>
+        <div class="quickGrid">
+          <a class="quickBtn" href="./video.html"><i class="fa-solid fa-video"></i> Videos</a>
+          <a class="quickBtn" href="./pdf.html"><i class="fa-solid fa-file-pdf"></i> Notes PDF</a>
+          <a class="quickBtn" href="./weeklytest.html"><i class="fa-solid fa-calendar-week"></i> Weekly Test</a>
+          <a class="quickBtn" href="./quiz.html"><i class="fa-solid fa-bolt"></i> Quiz</a>
+          <a class="quickBtn" href="./ebook.html"><i class="fa-solid fa-book"></i> E-book</a>
+          <a class="quickBtn" href="./current-affairs.html"><i class="fa-solid fa-newspaper"></i> Current Affairs</a>
+          <a class="quickBtn" href="./banner.html"><i class="fa-regular fa-images"></i> Baner</a>
         </div>
-
-        <div class="postsBox" id="latestPostsBox">
-          <div class="mutedSmall">Loading posts...</div>
-        </div>
-
       </div>
 
     </section>
 
-    <div class="footer mutedSmall">
-      Mockrise Dashboard • Mobile Friendly ✅
-    </div>
-
+    <!-- ✅ Footer हटाया जैसा तूने बोला -->
   </main>
 
 </div>
