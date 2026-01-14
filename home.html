@@ -5,13 +5,9 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Mockrise • Dashboard</title>
 
-  <!-- Font -->
   <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
-
-  <!-- ✅ Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
-  <!-- CSS -->
   <link rel="stylesheet" href="./assets/css/base.css">
   <link rel="stylesheet" href="./assets/css/sidebar.css">
   <link rel="stylesheet" href="./assets/css/home.css">
@@ -19,63 +15,57 @@
 
 <body>
 
-<!-- ✅ Mobile Overlay -->
 <div class="sideOverlay" id="sideOverlay"></div>
 
 <div class="appShell">
 
-  <!-- ✅ Sidebar (CoprepEdu style) -->
+  <!-- ✅ Sidebar -->
   <aside class="side" id="sideBar">
     <div class="sideTop">
 
-      <!-- Brand -->
-      <div class="brand">
-        <div class="logoBox"><i class="fa-solid fa-layer-group"></i></div>
-        <div>
-          <div class="brandTitle">Mockrise</div>
-          <div class="brandSub">Admin Panel</div>
-        </div>
+      <!-- ✅ Brand (ICON हटाया) -->
+      <div class="brandClean">
+        <div class="brandTitleBig">Mockrise</div>
+        <div class="brandSubSmall">Admin Panel</div>
       </div>
 
-      <!-- User Card -->
-      <div class="userCard">
-        <div class="userRow">
-          <img class="userPic" id="userPic" src="https://i.imgur.com/4M34hi2.png" alt="user">
-          <div style="min-width:0">
-            <div class="userName" id="userName">Not logged in</div>
-            <div class="userEmail" id="userEmail">—</div>
+      <!-- ✅ Mini User Card -->
+      <div class="userMini">
+        <div class="userMiniRow">
+          <img class="userMiniPic" id="userPic" src="https://i.imgur.com/4M34hi2.png" alt="user">
+          <div class="userMiniInfo">
+            <div class="userMiniName" id="userName">Not logged in</div>
+            <div class="userMiniMail" id="userEmail">—</div>
           </div>
         </div>
 
-        <div class="userBtns">
-          <button class="btnPrimary" id="loginBtn">
+        <div class="userMiniBtns">
+          <button class="btnPrimary miniBtn" id="loginBtn">
             <i class="fa-solid fa-right-to-bracket"></i>
             Login
           </button>
 
-          <button class="btnGhost" id="logoutBtn">
+          <button class="btnGhost miniBtn" id="logoutBtn">
             <i class="fa-solid fa-arrow-right-from-bracket"></i>
             Logout
           </button>
         </div>
 
-        <div class="tinyNote">
-          Admin only: <b id="adminOnlyTxt">aadityaraj7852@gmail.com</b>
+        <div class="adminNote">
+          Admin: <b id="adminOnlyTxt">aadityaraj7852@gmail.com</b>
         </div>
       </div>
 
-      <!-- Search -->
-      <div class="sideSearch">
-        <i class="fa-solid fa-magnifying-glass"></i>
-        <input id="sideSearchInput" placeholder="Search menu..." />
+      <!-- ✅ Search (icon हटाया) -->
+      <div class="sideSearchClean">
+        <input id="sideSearchInput" placeholder="Search..." />
       </div>
 
       <div class="sideSectionTitle">
-        <i class="fa-solid fa-bars-staggered"></i>
         Menu
       </div>
 
-      <!-- Menu -->
+      <!-- ✅ Menu -->
       <div class="labelsBox" id="menuBox">
 
         <a class="labelBtn labelBtnActive" href="./home.html">
@@ -130,31 +120,37 @@
   <!-- ✅ Main -->
   <main class="main">
 
-    <!-- ✅ Topbar -->
+    <!-- ✅ CoprepEdu Style Header -->
     <div class="topbar">
-      <div>
-        <div class="pageTitle">Dashboard</div>
-        <div class="pageSub" id="statusTxt">Ready ✅</div>
+      <div class="topbarLeft">
+        <button class="menuCircle" id="toggleMenu" title="Menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <div>
+          <div class="pageTitle">Dashboard</div>
+          <div class="pageSub" id="statusTxt">Ready ✅</div>
+        </div>
       </div>
 
       <div class="topbarRight">
-        <button class="btnSmall" id="toggleMenu" title="Menu">
-          <i class="fa-solid fa-bars"></i>
-        </button>
+        <a class="topbarBtn" href="./home.html" title="Refresh">
+          <i class="fa-solid fa-rotate-right"></i>
+        </a>
       </div>
     </div>
 
     <!-- ✅ Content -->
     <section class="contentGrid">
 
-      <!-- Website card -->
+      <!-- ✅ Website -->
       <div class="card">
         <div class="cardHead">
           <div>
-            <div class="cardTitle"><i class="fa-solid fa-globe"></i> Website Link</div>
-            <div class="cardSub">Live site open कर</div>
+            <div class="cardTitle">🌐 Live Website Control</div>
+            <div class="cardSub">एक click में site open + copy</div>
           </div>
-          <span class="pill"><i class="fa-solid fa-signal"></i> Live</span>
+          <span class="pill">Online ✅</span>
         </div>
 
         <div class="websiteBox">
@@ -163,7 +159,7 @@
           <div class="siteBtns">
             <a class="btnPrimary" id="openSiteBtn" target="_blank">
               <i class="fa-solid fa-arrow-up-right-from-square"></i>
-              Open Website
+              Open
             </a>
 
             <button class="btnGhost" id="copySiteBtn">
@@ -174,18 +170,18 @@
         </div>
 
         <div class="tinyNote">
-          ✅ Website link `assets/js/config.js` में change कर सकता है
+          ⚙️ Website link `assets/js/config.js` में बदल सकता है
         </div>
       </div>
 
-      <!-- Total content -->
+      <!-- ✅ Analytics -->
       <div class="card">
         <div class="cardHead">
           <div>
-            <div class="cardTitle"><i class="fa-solid fa-chart-pie"></i> Total Content</div>
-            <div class="cardSub">Auto count (Blogger)</div>
+            <div class="cardTitle">📊 Content Analytics</div>
+            <div class="cardSub">Blogger Labels से auto count</div>
           </div>
-          <span class="pill"><i class="fa-solid fa-robot"></i> Auto</span>
+          <span class="pill">Auto ⚡</span>
         </div>
 
         <div class="statsGrid">
@@ -225,30 +221,6 @@
           </div>
         </div>
 
-        <div class="tinyNote">
-          *Counts Blogger labels से आते हैं ✅
-        </div>
-      </div>
-
-      <!-- Quick Actions -->
-      <div class="card fullWidth">
-        <div class="cardHead">
-          <div>
-            <div class="cardTitle"><i class="fa-solid fa-wand-magic-sparkles"></i> Quick Actions</div>
-            <div class="cardSub">एक tap में manager खोल</div>
-          </div>
-          <span class="pill"><i class="fa-solid fa-arrow-right"></i> Go</span>
-        </div>
-
-        <div class="quickGrid">
-          <a class="quickBtn" href="./video.html"><i class="fa-solid fa-video"></i> Videos</a>
-          <a class="quickBtn" href="./pdf.html"><i class="fa-solid fa-file-pdf"></i> Notes PDF</a>
-          <a class="quickBtn" href="./weeklytest.html"><i class="fa-solid fa-calendar-week"></i> Weekly Test</a>
-          <a class="quickBtn" href="./quiz.html"><i class="fa-solid fa-bolt"></i> Quiz</a>
-          <a class="quickBtn" href="./ebook.html"><i class="fa-solid fa-book"></i> E-book</a>
-          <a class="quickBtn" href="./current-affairs.html"><i class="fa-solid fa-newspaper"></i> Current Affairs</a>
-          <a class="quickBtn" href="./banner.html"><i class="fa-regular fa-images"></i> Baner</a>
-        </div>
       </div>
 
     </section>
