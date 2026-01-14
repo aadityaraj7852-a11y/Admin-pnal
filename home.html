@@ -1,99 +1,254 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Mockrise • Dashboard</title>
 
-  <link rel="stylesheet" href="/assets/css/base.css"/>
-  <link rel="stylesheet" href="/assets/css/sidebar.css"/>
-  <link rel="stylesheet" href="/assets/css/home.css"/>
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 
-  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <!-- ✅ Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="./assets/css/base.css">
+  <link rel="stylesheet" href="./assets/css/sidebar.css">
+  <link rel="stylesheet" href="./assets/css/home.css">
 </head>
 
 <body>
 <div class="appShell">
 
-  <aside class="side">
+  <!-- ✅ Sidebar -->
+  <aside class="side" id="sideBar">
     <div class="sideTop">
+
       <div class="brand">
-        <div class="logoBox"><span class="material-symbols-outlined">dashboard</span></div>
+        <div class="logoBox"><i class="fa-solid fa-layer-group"></i></div>
         <div>
-          <div style="font-weight:950;">Mockrise</div>
-          <div class="mutedSmall">Admin Panel</div>
+          <div class="brandTitle">Mockrise</div>
+          <div class="brandSub">Blogger Admin Panel</div>
         </div>
       </div>
 
+      <!-- User Card -->
       <div class="userCard">
         <div class="userRow">
-          <img id="userPic" class="userPic" src="https://i.ibb.co/2FsfXqM/user.png" alt="user"/>
-          <div style="min-width:0;">
-            <div id="userName" class="userName">-</div>
-            <div id="userEmail" class="userEmail">-</div>
+          <img class="userPic" id="userPic" src="https://i.imgur.com/4M34hi2.png" alt="">
+          <div style="min-width:0">
+            <div class="userName" id="userName">Not logged in</div>
+            <div class="userEmail" id="userEmail">—</div>
           </div>
         </div>
 
         <div class="userBtns">
-          <a class="btnGhost" href="/home.html"><span class="material-symbols-outlined">home</span> Home</a>
-          <button id="logoutBtn" class="btnGhost"><span class="material-symbols-outlined">logout</span> Logout</button>
+          <button class="btnPrimary" id="loginBtn">
+            <i class="fa-solid fa-right-to-bracket"></i>
+            Login
+          </button>
+
+          <button class="btnGhost" id="logoutBtn">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+            Logout
+          </button>
+        </div>
+
+        <div class="tinyNote">
+          Admin only: <b id="adminOnlyTxt">aadityaraj7852@gmail.com</b>
         </div>
       </div>
 
-      <div class="labelsBox" id="labelsBox"></div>
+      <div class="divider"></div>
 
-      <div style="margin-top:14px;display:grid;gap:10px;">
-        <a class="btnGhost" href="/pdf.html">📄 PDF</a>
-        <a class="btnGhost" href="/video.html">🎥 Video</a>
-        <a class="btnGhost" href="/image.html">🖼️ Image</a>
-        <a class="btnGhost" href="/test.html">📝 Test/Quiz</a>
-        <a class="btnGhost" href="/cutoff.html">📊 Cutoff</a>
-        <a class="btnGhost" href="/omr.html">✅ OMR</a>
+      <!-- Main Menu -->
+      <div class="sideSectionTitle">
+        <i class="fa-solid fa-bars-staggered"></i>
+        Menu
       </div>
+
+      <div class="labelsBox">
+
+        <a class="labelBtn labelBtnActive" href="./home.html">
+          <span><i class="fa-solid fa-gauge-high"></i> Dashboard</span>
+          <span class="badge">Home</span>
+        </a>
+
+        <a class="labelBtn" href="./video.html">
+          <span><i class="fa-solid fa-video"></i> Video Manager</span>
+          <span class="badge" id="countVideo">0</span>
+        </a>
+
+        <a class="labelBtn" href="./pdf.html">
+          <span><i class="fa-solid fa-file-pdf"></i> PDF Manager</span>
+          <span class="badge" id="countPdf">0</span>
+        </a>
+
+        <a class="labelBtn" href="./image.html">
+          <span><i class="fa-regular fa-image"></i> Image Manager</span>
+          <span class="badge" id="countImage">0</span>
+        </a>
+
+        <a class="labelBtn" href="./test.html">
+          <span><i class="fa-solid fa-pen-to-square"></i> Test / Quiz</span>
+          <span class="badge" id="countTest">0</span>
+        </a>
+
+        <a class="labelBtn" href="./cutoff.html">
+          <span><i class="fa-solid fa-chart-line"></i> Cutoff</span>
+          <span class="badge">Live</span>
+        </a>
+
+        <a class="labelBtn" href="./omr.html">
+          <span><i class="fa-solid fa-list-check"></i> OMR Checking</span>
+          <span class="badge">Tool</span>
+        </a>
+
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Auto Labels -->
+      <div class="sideSectionTitle">
+        <i class="fa-solid fa-tags"></i>
+        Labels (Auto)
+      </div>
+
+      <input id="labelSearch" class="field" placeholder="Search label..." />
+
+      <div class="postsBox" id="labelsList">
+        <div class="mutedSmall">Loading labels...</div>
+      </div>
+
     </div>
 
     <div class="sideBottom">
-      <div class="mutedSmall">admin.mockrise.com ✅</div>
+      <div class="mutedSmall">Mockrise • Admin Panel ✅</div>
     </div>
   </aside>
 
+  <!-- ✅ Main -->
   <main class="main">
-    <header class="topbar">
+
+    <!-- Topbar -->
+    <div class="topbar">
       <div>
-        <div style="font-weight:950;font-size:18px;">Dashboard</div>
-        <div class="mutedSmall" id="statusTxt">Ready</div>
+        <div class="pageTitle">Dashboard</div>
+        <div class="pageSub" id="statusTxt">Ready ✅</div>
       </div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;">
-        <a class="btnGhost" href="/index.html">Login</a>
-      </div>
-    </header>
 
-    <section class="content">
+      <div class="topbarRight">
+        <button class="btnSmall" id="toggleMenu" title="Menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+
+    <section class="contentGrid">
+
+      <!-- Website Card -->
       <div class="card">
-  <h3 style="margin:0;font-weight:950;">Quick Publish</h3>
-  <p class="mutedSmall">Label select करके सीधे पोस्ट publish ✅ (No JSON)</p>
+        <div class="cardHead">
+          <div>
+            <div class="cardTitle"><i class="fa-solid fa-globe"></i> Website Link</div>
+            <div class="cardSub">Live site open कर</div>
+          </div>
+          <span class="pill"><i class="fa-solid fa-signal"></i> Live</span>
+        </div>
 
-  <label class="mutedSmall" style="display:block;margin-top:12px;">Title</label>
-  <input id="title" class="field" placeholder="Post title"/>
+        <div class="websiteBox">
+          <div class="siteUrl" id="siteUrl">https://mockrise.com</div>
+          <div class="siteBtns">
+            <a class="btnPrimary" id="openSiteBtn" target="_blank">
+              <i class="fa-solid fa-arrow-up-right-from-square"></i>
+              Open Website
+            </a>
+            <button class="btnGhost" id="copySiteBtn">
+              <i class="fa-regular fa-copy"></i>
+              Copy
+            </button>
+          </div>
+        </div>
 
-  <label class="mutedSmall" style="display:block;margin-top:12px;">Description</label>
-  <input id="desc" class="field" placeholder="Short note"/>
-
-  <button id="publishBtn" class="btnPrimary" style="margin-top:12px;">
-    <span class="material-symbols-outlined">publish</span> Publish
-  </button>
-</div>
-      <div class="card">
-        <h3 style="margin:0;font-weight:950;">Latest Posts (Active Label)</h3>
-        <p class="mutedSmall">Label sidebar से change होगा ✅</p>
-        <div id="postsBox" style="margin-top:10px;display:grid;gap:10px;"></div>
+        <div class="tinyNote">
+          ✅ Website link `assets/js/config.js` में change कर सकता है
+        </div>
       </div>
+
+      <!-- Stats Card -->
+      <div class="card">
+        <div class="cardHead">
+          <div>
+            <div class="cardTitle"><i class="fa-solid fa-chart-pie"></i> Total Content</div>
+            <div class="cardSub">Labels से auto count</div>
+          </div>
+          <span class="pill"><i class="fa-solid fa-robot"></i> Auto</span>
+        </div>
+
+        <div class="statsGrid">
+          <div class="statBox">
+            <div class="statLabel"><i class="fa-solid fa-video"></i> Videos</div>
+            <div class="statValue" id="statVideo">0</div>
+          </div>
+          <div class="statBox">
+            <div class="statLabel"><i class="fa-solid fa-file-pdf"></i> PDFs</div>
+            <div class="statValue" id="statPdf">0</div>
+          </div>
+          <div class="statBox">
+            <div class="statLabel"><i class="fa-regular fa-image"></i> Images</div>
+            <div class="statValue" id="statImage">0</div>
+          </div>
+          <div class="statBox">
+            <div class="statLabel"><i class="fa-solid fa-pen-to-square"></i> Tests</div>
+            <div class="statValue" id="statTest">0</div>
+          </div>
+        </div>
+
+        <div class="tinyNote">
+          *Counts Blogger labels से आते हैं ✅
+        </div>
+      </div>
+
+      <!-- Latest Posts -->
+      <div class="card" style="grid-column:1/-1">
+        <div class="cardHead">
+          <div>
+            <div class="cardTitle"><i class="fa-solid fa-clock"></i> Latest Posts</div>
+            <div class="cardSub">Recent content (Label-wise)</div>
+          </div>
+          <span class="pill" id="activeLabelPill"><i class="fa-solid fa-filter"></i> All</span>
+        </div>
+
+        <div class="formGrid">
+          <div>
+            <div class="labelTxt">Active Label</div>
+            <select id="activeLabelSelect" class="field">
+              <option value="">All Labels</option>
+            </select>
+          </div>
+
+          <div>
+            <div class="labelTxt">Search Post</div>
+            <input id="postSearch" class="field" placeholder="Type title..." />
+          </div>
+        </div>
+
+        <div class="postsBox" id="latestPostsBox">
+          <div class="mutedSmall">Loading posts...</div>
+        </div>
+
+      </div>
+
     </section>
+
+    <div class="footer mutedSmall">
+      Mockrise Dashboard • Mobile Friendly ✅
+    </div>
+
   </main>
 
 </div>
 
-<script type="module" src="/assets/js/pages/home.js"></script>
+<script type="module" src="./assets/js/pages/home.js"></script>
 </body>
 </html>
