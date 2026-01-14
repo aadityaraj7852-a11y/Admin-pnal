@@ -23,7 +23,6 @@
   <aside class="side" id="sideBar">
     <div class="sideTop">
 
-      <!-- Brand -->
       <div class="brandClean">
         <div class="brandTitleBig">Mockrise</div>
         <div class="brandSubSmall">Admin Panel</div>
@@ -117,15 +116,17 @@
 
         <div class="cwTitleWrap">
           <div class="cwTitle">Dashboard</div>
-          <div class="cwSub" id="statusTxt">Ready</div>
+
+          <!-- ✅ Ready हटाया, Live icon रखा -->
+          <div class="cwSubLive">
+            <i class="fa-solid fa-signal"></i>
+            <span>Live</span>
+          </div>
         </div>
       </div>
 
       <div class="cwRight">
-        <a class="cwIconBtn" id="openWebsiteTopBtn" href="https://mockrise.com" target="_blank" title="Open Website">
-          <i class="fa-solid fa-globe"></i>
-        </a>
-
+        <!-- ✅ Web icon हटाया -->
         <button class="cwIconBtn danger" id="logoutTopBtn" title="Logout">
           <i class="fa-solid fa-right-from-bracket"></i>
         </button>
@@ -135,7 +136,7 @@
     <!-- Content -->
     <section class="contentGrid">
 
-      <!-- Website Card -->
+      <!-- ✅ Blue box corners sharp -->
       <div class="heroCard">
         <div class="heroText">
           <div class="heroHeading">Website</div>
@@ -148,29 +149,14 @@
 
             <button class="heroBtnGhost" id="copySiteBtn">
               <i class="fa-regular fa-copy"></i>
-              Copy Link
+              Copy
             </button>
-          </div>
-
-          <div class="heroLink" id="siteUrl">https://mockrise.com</div>
-        </div>
-
-        <div class="heroStats">
-          <div class="heroStatBox">
-            <div class="heroStatLabel">Status</div>
-            <div class="heroStatValue">Live</div>
           </div>
         </div>
       </div>
 
-      <!-- Analytics Card -->
+      <!-- ✅ Card title हटाया -->
       <div class="card">
-        <div class="cardHead">
-          <div>
-            <div class="cardTitle">Content Analytics</div>
-          </div>
-        </div>
-
         <div class="statsGrid">
           <div class="statBox">
             <div class="statLabel"><i class="fa-solid fa-video"></i> Videos</div>
@@ -216,36 +202,50 @@
 </div>
 
 <script type="module">
-  // Sidebar toggle (mobile)
+  // ✅ Sidebar toggle FIX (अब काम करेगा)
   const sideBar = document.getElementById("sideBar");
   const overlay = document.getElementById("sideOverlay");
   const toggleMenu = document.getElementById("toggleMenu");
 
-  toggleMenu?.addEventListener("click", ()=>{
-    sideBar.classList.toggle("open");
-    overlay.classList.toggle("show");
-  });
-
-  overlay?.addEventListener("click", ()=>{
+  function openSidebar(){
+    sideBar.classList.add("open");
+    overlay.classList.add("show");
+    document.body.style.overflow = "hidden";
+  }
+  function closeSidebar(){
     sideBar.classList.remove("open");
     overlay.classList.remove("show");
+    document.body.style.overflow = "";
+  }
+
+  toggleMenu?.addEventListener("click", ()=>{
+    if(sideBar.classList.contains("open")) closeSidebar();
+    else openSidebar();
   });
 
-  // Top logout => sidebar logout click
+  overlay?.addEventListener("click", closeSidebar);
+
+  // ✅ Top logout => sidebar logout click
   document.getElementById("logoutTopBtn")?.addEventListener("click", ()=>{
     document.getElementById("logoutBtn")?.click();
   });
 
-  // Copy site
+  // ✅ Copy link (text दिखाए बिना काम करेगा)
   document.getElementById("copySiteBtn")?.addEventListener("click", async ()=>{
-    const url = document.getElementById("siteUrl")?.textContent?.trim() || "https://mockrise.com";
+    const url = "https://mockrise.com";
     try{
       await navigator.clipboard.writeText(url);
-      alert("Link copied");
+      alert("Copied");
     }catch(e){
       prompt("Copy this:", url);
     }
   });
+
+  // ✅ Mobile: menu click पर sidebar auto close
+  document.querySelectorAll("#menuBox a").forEach(a=>{
+    a.addEventListener("click", ()=> closeSidebar());
+  });
+
 </script>
 
 <script type="module" src="./assets/js/pages/home.js"></script>
