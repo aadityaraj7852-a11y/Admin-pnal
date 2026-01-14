@@ -58,20 +58,24 @@
   justify-content:center;
   box-shadow:0 10px 20px rgba(0,0,0,.04);
 }
+
 .cwIconBtn:hover{border-color:rgba(10,10,194,.35);}
+
 .cwIconBtn.danger{
   border-color:rgba(220,38,38,.35);
   color:#dc2626;
 }
 .cwIconBtn.danger:hover{border-color:rgba(220,38,38,.65);}
 
-/* ✅ Hero (blue box corners NOT round) */
+/* ✅ Light Website Box */
 .heroCard{
   grid-column:1 / -1;
-  padding:18px;
-  background:linear-gradient(135deg, rgba(10,10,194,.12), rgba(10,10,194,.05));
-  border:1px solid rgba(10,10,194,.12);
-  box-shadow:0 16px 46px rgba(0,0,0,.06);
+  padding:16px;
+  background:rgba(10,10,194,.05);
+  border:1px solid rgba(10,10,194,.10);
+  box-shadow:0 14px 34px rgba(0,0,0,.05);
+
+  /* sharp corners */
   border-radius:0px;
 
   display:flex;
@@ -81,7 +85,7 @@
 }
 
 .heroHeading{
-  font-size:18px;
+  font-size:16px;
   font-weight:950;
   color:#111118;
 }
@@ -90,7 +94,7 @@
   display:flex;
   gap:10px;
   flex-wrap:wrap;
-  margin-top:14px;
+  margin-top:12px;
 }
 
 .heroBtnPrimary{
@@ -104,7 +108,7 @@
   display:inline-flex;
   align-items:center;
   gap:10px;
-  box-shadow:0 12px 24px rgba(10,10,194,.22);
+  box-shadow:0 12px 24px rgba(10,10,194,.18);
 }
 .heroBtnPrimary:active{transform:scale(.98);}
 
