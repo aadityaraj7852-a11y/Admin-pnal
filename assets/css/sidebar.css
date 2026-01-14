@@ -208,3 +208,24 @@
   font-size:12px;
   text-align:center;
 }
+.sideOverlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.35);
+  z-index:50;
+}
+.sideOverlay.show{display:block;}
+
+@media (max-width:980px){
+  .side{
+    position:fixed;
+    left:-360px;
+    top:0;
+    width:320px;
+    height:100dvh;
+    z-index:60;
+    transition:.25s;
+  }
+  .side.open{left:0;}
+}
