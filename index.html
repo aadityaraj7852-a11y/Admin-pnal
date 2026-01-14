@@ -15,13 +15,18 @@
 
   <div class="page">
     <div class="card">
+
       <div class="brand">
-        <div class="brandTitle">Mockrise</div>
-        <div class="brandSub">Admin Login</div>
+        <div class="brandLogo">M</div>
+        <div>
+          <div class="brandTitle">Mockrise</div>
+          <div class="brandSub">Admin Login</div>
+        </div>
       </div>
 
       <div class="statusRow">
         <div id="statusText" class="statusText">Ready</div>
+        <div class="tag">Admin Only</div>
       </div>
 
       <!-- ✅ Google Button -->
@@ -45,20 +50,9 @@
       </div>
 
       <div class="note">
-        सिर्फ Admin ही login कर सकता है ✅
+        Google से login करो, तभी Blogger पर post publish होगी।
       </div>
 
-      <!-- ✅ Plan-B Email/Pass fallback -->
-      <div class="divider"></div>
-
-      <div class="fallbackTitle">Plan B (Backup Login)</div>
-      <form id="backupForm" class="form">
-        <input class="field" id="bEmail" type="email" placeholder="Admin email" />
-        <input class="field" id="bPass" type="password" placeholder="Password" />
-        <button class="btn" type="submit">Login</button>
-      </form>
-
-      <div class="tiny" id="tinyHint"></div>
     </div>
   </div>
 
@@ -68,7 +62,7 @@
 
   <script>
     // ✅ GIS callback must be global
-    window.onGoogleCredential = function (resp) {
+    window.onGoogleCredential = function(resp){
       window.__MOCKRISE_GIS_CREDENTIAL = resp?.credential || "";
       window.dispatchEvent(new CustomEvent("mockrise_gis"));
     };
