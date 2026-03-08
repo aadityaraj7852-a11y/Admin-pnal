@@ -1,56 +1,663 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>Mockrise • Admin Login</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SERP Intel v4</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root {
+  --bg:#0a0a0f; --surface:#111118; --surface2:#1a1a24; --border:#2a2a3a;
+  --accent:#00ff88; --accent2:#ff6b35; --accent3:#7c5cfc;
+  --text:#e8e8f0; --muted:#6b6b80; --danger:#ff4444; --gold:#ffd700;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,255,136,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,136,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0;}
+.wrap{max-width:1200px;margin:0 auto;padding:0 16px;position:relative;z-index:1;}
 
-  <link rel="stylesheet" href="./assets/css/base.css" />
-  <link rel="stylesheet" href="./assets/css/login.css" />
+/* Header */
+header{padding:18px 0 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.logo{display:flex;align-items:center;gap:10px;}
+.logo-icon{width:38px;height:38px;background:var(--accent);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;color:#000;}
+.logo h1{font-size:20px;font-weight:800;}
+.logo h1 span{color:var(--accent);}
+.logo p{font-size:10px;color:var(--muted);font-family:'Space Mono',monospace;}
+.hdr-right{display:flex;align-items:center;gap:10px;font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
-  <!-- ✅ Google Identity Services -->
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
+/* Tabs */
+.tabs{display:flex;gap:4px;padding:18px 0 0;border-bottom:1px solid var(--border);}
+.tab{padding:9px 18px;border-radius:8px 8px 0 0;cursor:pointer;font-size:13px;font-weight:600;color:var(--muted);border:1px solid transparent;border-bottom:none;transition:all .2s;display:flex;align-items:center;gap:7px;margin-bottom:-1px;white-space:nowrap;}
+.tab:hover{color:var(--text);background:var(--surface);}
+.tab.active{color:var(--accent);background:var(--surface);border-color:var(--border);border-bottom-color:var(--surface);}
+.section{display:none;padding:24px 0;}
+.section.active{display:block;}
+
+/* Cards */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;position:relative;overflow:hidden;margin-bottom:16px;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),transparent);}
+.card-title{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.card-title i{color:var(--accent);}
+
+/* Inputs */
+input,select{background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:'Syne',sans-serif;font-size:14px;padding:10px 13px;width:100%;outline:none;transition:border-color .2s;}
+input:focus,select:focus{border-color:var(--accent);}
+input::placeholder{color:var(--muted);}
+.row{display:flex;gap:10px;margin-bottom:14px;}
+.row input,.row select{flex:1;}
+
+/* Buttons */
+.btn{padding:10px 18px;border-radius:8px;border:none;cursor:pointer;font-family:'Syne',sans-serif;font-weight:600;font-size:13px;display:inline-flex;align-items:center;gap:7px;transition:all .2s;}
+.btn-g{background:var(--accent);color:#000;}
+.btn-g:hover{background:#00cc6e;transform:translateY(-1px);}
+.btn-s{background:var(--surface2);color:var(--text);border:1px solid var(--border);}
+.btn-s:hover{border-color:var(--accent);color:var(--accent);}
+.btn:disabled{opacity:.4;cursor:not-allowed;transform:none!important;}
+
+/* Trend items */
+.trend-item{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid rgba(42,42,58,.5);cursor:pointer;transition:all .2s;}
+.trend-item:hover{padding-left:6px;}
+.trend-item:last-child{border-bottom:none;}
+.tn{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);width:18px;text-align:right;}
+.tt{flex:1;font-size:14px;font-weight:600;}
+.tv{font-family:'Space Mono',monospace;font-size:11px;color:var(--accent);background:rgba(0,255,136,.08);padding:3px 8px;border-radius:4px;}
+
+/* Competition box */
+.comp-box{border-radius:10px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+.comp-num{font-size:28px;font-weight:800;font-family:'Space Mono',monospace;}
+.comp-info{}
+.comp-label{font-size:14px;font-weight:700;}
+.comp-sub{font-size:11px;color:var(--muted);margin-top:2px;}
+
+/* Stats strip */
+.stats{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px;}
+.stat{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px 16px;flex:1;min-width:100px;}
+.stat-n{font-size:20px;font-weight:800;font-family:'Space Mono',monospace;color:var(--accent);}
+.stat-l{font-size:11px;color:var(--muted);margin-top:2px;}
+
+/* Table */
+.tbl{width:100%;border-collapse:collapse;font-size:13px;}
+.tbl th{text-align:left;padding:9px 12px;color:var(--muted);font-size:10px;letter-spacing:.8px;text-transform:uppercase;border-bottom:1px solid var(--border);font-family:'Space Mono',monospace;}
+.tbl td{padding:11px 12px;border-bottom:1px solid rgba(42,42,58,.4);vertical-align:middle;}
+.tbl tr:hover td{background:rgba(0,255,136,.03);}
+.rank-badge{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:7px;font-weight:800;font-size:12px;font-family:'Space Mono',monospace;}
+.r1{background:rgba(255,215,0,.15);color:var(--gold);border:1px solid rgba(255,215,0,.3);}
+.r2{background:rgba(192,192,192,.15);color:#c0c0c0;border:1px solid rgba(192,192,192,.3);}
+.r3{background:rgba(205,127,50,.15);color:#cd7f32;border:1px solid rgba(205,127,50,.3);}
+.ro{background:var(--surface2);color:var(--muted);border:1px solid var(--border);}
+.domain-pill{display:inline-flex;align-items:center;gap:6px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:4px 10px;font-size:12px;font-family:'Space Mono',monospace;cursor:pointer;transition:all .2s;max-width:180px;overflow:hidden;}
+.domain-pill:hover{border-color:var(--accent);color:var(--accent);}
+
+/* Status */
+.msg{font-size:12px;font-family:'Space Mono',monospace;padding:10px 14px;border-radius:8px;margin:8px 0;display:flex;align-items:center;gap:8px;}
+.msg-i{background:rgba(0,255,136,.06);border:1px solid rgba(0,255,136,.2);color:var(--accent);}
+.msg-w{background:rgba(255,107,53,.06);border:1px solid rgba(255,107,53,.2);color:var(--accent2);}
+.msg-e{background:rgba(255,68,68,.06);border:1px solid rgba(255,68,68,.2);color:var(--danger);}
+
+/* Progress */
+.prog{height:3px;background:var(--surface2);border-radius:2px;overflow:hidden;margin:10px 0;display:none;}
+.prog-f{height:100%;background:var(--accent);border-radius:2px;transition:width .3s;}
+
+/* Spinner */
+.spin{display:inline-block;width:15px;height:15px;border:2px solid rgba(0,255,136,.2);border-top-color:var(--accent);border-radius:50%;animation:sp .7s linear infinite;}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* Modal */
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:1000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px);}
+.modal-ov.open{display:flex;}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;width:92vw;max-width:860px;max-height:85vh;overflow:hidden;display:flex;flex-direction:column;}
+.modal-hdr{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.modal-hdr h3{font-size:14px;}
+.modal-body{flex:1;overflow-y:auto;padding:20px;}
+.modal-close{background:none;border:none;cursor:pointer;color:var(--muted);font-size:18px;transition:color .2s;}
+.modal-close:hover{color:var(--danger);}
+.preview-content{font-size:13px;line-height:1.8;color:var(--text);}
+.preview-content h2,.preview-content h3{color:var(--accent);margin:14px 0 6px;}
+.preview-content p{margin-bottom:8px;color:#c8c8d8;}
+
+/* KW chips */
+.kw-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;}
+.kw-chip{font-size:11px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:4px 10px;cursor:pointer;font-family:'Space Mono',monospace;color:var(--muted);transition:all .2s;}
+.kw-chip:hover{border-color:var(--accent);color:var(--accent);}
+
+/* Grid */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:640px){.g2{grid-template-columns:1fr;}.tabs{overflow-x:auto;}}
+
+.empty{text-align:center;padding:50px 20px;color:var(--muted);}
+.empty i{font-size:40px;display:block;margin-bottom:12px;opacity:.3;}
+.empty p{font-size:13px;}
+.fade{animation:fd .35s ease;}
+@keyframes fd{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:var(--surface);}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+</style>
 </head>
 <body>
+<div class="wrap">
 
-  <div class="page">
-    <div class="card">
-
-
-      <!-- ✅ Google Button -->
-      <div class="googleBox">
-        <div id="g_id_onload"
-             data-client_id=""
-             data-context="signin"
-             data-ux_mode="popup"
-             data-callback="onGoogleCredential"
-             data-auto_prompt="true">
-        </div>
-
-        <div class="g_id_signin"
-             data-type="standard"
-             data-size="large"
-             data-theme="filled_blue"
-             data-text="signin_with"
-             data-shape="pill"
-             data-logo_alignment="left">
-        </div>
-      </div>
-
-
+<!-- Header -->
+<header>
+  <div class="logo">
+    <div class="logo-icon"><i class="fa-solid fa-satellite-dish"></i></div>
+    <div>
+      <h1>SERP <span>Intel</span></h1>
+      <p>GOOGLE RANK INTELLIGENCE · v4</p>
     </div>
   </div>
+  <div class="hdr-right">
+    <div class="dot"></div>
+    <span id="clock">--:--</span>
+  </div>
+</header>
 
-  <script type="module" src="./assets/js/config.js"></script>
-  <script type="module" src="./assets/js/auth.js"></script>
-  <script type="module" src="./assets/js/pages/login.js"></script>
+<!-- Tabs -->
+<div class="tabs">
+  <div class="tab active" onclick="goTab('trends',this)"><i class="fa-solid fa-fire"></i> Trending</div>
+  <div class="tab" onclick="goTab('checker',this)"><i class="fa-solid fa-magnifying-glass-chart"></i> Rank Check</div>
+  <div class="tab" onclick="goTab('setup',this)"><i class="fa-solid fa-gear"></i> Setup</div>
+</div>
 
-  <script>
-    // ✅ GIS callback must be global
-    window.onGoogleCredential = function(resp){
-      window.__MOCKRISE_GIS_CREDENTIAL = resp?.credential || "";
-      window.dispatchEvent(new CustomEvent("mockrise_gis"));
-    };
-  </script>
+<!-- ===== TRENDING ===== -->
+<div id="tab-trends" class="section active">
+  <div class="g2">
+    <div class="card">
+      <div class="card-title"><i class="fa-solid fa-fire"></i> Google India Trending</div>
+      <div class="row">
+        <select id="cat">
+          <option value="">Sab Categories</option>
+          <option value="edu" selected>Education / Exam</option>
+          <option value="job">Sarkari Jobs</option>
+          <option value="res">Results</option>
+        </select>
+        <button class="btn btn-g" onclick="loadTrends()" style="white-space:nowrap"><i class="fa-solid fa-rotate"></i> Refresh</button>
+      </div>
+      <div id="trend-list">
+        <div class="empty"><i class="fa-solid fa-satellite-dish"></i><p>Refresh dabao</p></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><i class="fa-solid fa-bolt"></i> Quick Check</div>
+      <p style="font-size:12px;color:var(--muted);margin-bottom:12px">Trend pe click karo ya keyword type karo</p>
+      <div class="row">
+        <input type="text" id="qkw" placeholder="e.g. BSTC admit card 2026" />
+        <button class="btn btn-g" onclick="quickCheck()" style="white-space:nowrap"><i class="fa-solid fa-bolt"></i> Check</button>
+      </div>
+      <div id="kw-chips" class="kw-chips"></div>
+      <div id="quick-res"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== RANK CHECKER ===== -->
+<div id="tab-checker" class="section">
+  <div class="card">
+    <div class="card-title"><i class="fa-solid fa-magnifying-glass-chart"></i> Full Rank Checker</div>
+    <div class="g2" style="margin-bottom:14px">
+      <div>
+        <label style="font-size:11px;color:var(--muted);display:block;margin-bottom:6px">KEYWORD</label>
+        <input type="text" id="mkw" placeholder="e.g. Rajasthan GK PDF download" />
+      </div>
+      <div>
+        <label style="font-size:11px;color:var(--muted);display:block;margin-bottom:6px">TIME FILTER</label>
+        <select id="dfilter">
+          <option value="">Anytime</option>
+          <option value="d1">Last 24 Hours</option>
+          <option value="d2" selected>Last 2 Days</option>
+          <option value="w1">Last Week</option>
+          <option value="m1">Last Month</option>
+          <option value="m3">Last 3 Months</option>
+        </select>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+      <button class="btn btn-g" id="run-btn" onclick="runCheck()"><i class="fa-solid fa-radar"></i> Run Check</button>
+      <button class="btn btn-s" onclick="clearCheck()"><i class="fa-solid fa-trash"></i> Clear</button>
+      <span id="run-status" style="font-size:11px;color:var(--muted);font-family:'Space Mono',monospace"></span>
+    </div>
+    <div class="prog" id="prog"><div class="prog-f" id="prog-f" style="width:0%"></div></div>
+  </div>
+
+  <div id="res-wrap" style="display:none">
+    <!-- Competition Box -->
+    <div id="comp-box" class="comp-box card"></div>
+
+    <!-- Stats -->
+    <div class="stats" id="stats-bar"></div>
+
+    <!-- Sort + Table -->
+    <div class="card">
+      <div class="card-title" style="justify-content:space-between">
+        <span><i class="fa-solid fa-table"></i> Results — <span id="res-kw" style="color:var(--text);font-size:12px;text-transform:none;letter-spacing:0;background:var(--surface2);padding:2px 8px;border-radius:4px"></span></span>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-s" style="padding:4px 10px;font-size:11px" onclick="doSort('asc')"><i class="fa-solid fa-arrow-up-1-9"></i> 1→10</button>
+          <button class="btn btn-s" style="padding:4px 10px;font-size:11px" onclick="doSort('desc')"><i class="fa-solid fa-arrow-down-9-1"></i> 10→1</button>
+        </div>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="tbl">
+          <thead><tr><th>Rank</th><th>Website</th><th>Title</th><th>Preview</th></tr></thead>
+          <tbody id="res-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SETUP ===== -->
+<div id="tab-setup" class="section">
+  <div class="g2">
+    <div class="card">
+      <div class="card-title"><i class="fa-solid fa-key"></i> Google CSE Setup</div>
+      <label style="font-size:11px;color:var(--muted);display:block;margin-bottom:6px">API KEY</label>
+      <input type="password" id="cse-key" placeholder="AIzaSy..." style="margin-bottom:12px" />
+      <label style="font-size:11px;color:var(--muted);display:block;margin-bottom:6px">SEARCH ENGINE ID (cx)</label>
+      <input type="text" id="cse-id" placeholder="002fb51..." style="margin-bottom:14px" />
+      <button class="btn btn-g" onclick="saveSetup()"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+      <div id="setup-msg"></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="fa-solid fa-circle-info"></i> Free Limits</div>
+      <div style="font-size:13px;line-height:2.2;color:var(--muted)">
+        <div>✅ <strong style="color:var(--text)">100 searches/day</strong> free</div>
+        <div>✅ Real Google results</div>
+        <div>✅ Competition count milta hai</div>
+        <div>✅ Time filter support</div>
+        <div>✅ India (gl=in) results</div>
+        <div style="margin-top:10px;font-size:11px">
+          CSE link: <a href="https://programmablesearchengine.google.com" target="_blank" style="color:var(--accent)">programmablesearchengine.google.com</a><br>
+          API Console: <a href="https://console.cloud.google.com/apis/credentials" target="_blank" style="color:var(--accent)">console.cloud.google.com</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /wrap -->
+
+<!-- Preview Modal -->
+<div class="modal-ov" id="pmodal">
+  <div class="modal">
+    <div class="modal-hdr">
+      <div>
+        <h3 id="pm-title">Preview</h3>
+        <div id="pm-url" style="font-size:10px;color:var(--muted);font-family:'Space Mono',monospace;margin-top:3px"></div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-s" style="padding:6px 12px;font-size:11px" onclick="window.open(curUrl,'_blank')"><i class="fa-solid fa-arrow-up-right-from-square"></i> Open</button>
+        <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+    </div>
+    <div class="modal-body"><div id="pm-body" class="preview-content"></div></div>
+  </div>
+</div>
+
+<script>
+// ===== CONFIG =====
+let CSE_KEY = localStorage.getItem('cse_key') || 'AIzaSyCpBV7mDpohv2rcqjchBil9TsZuV5VNQIk';
+let CSE_ID  = localStorage.getItem('cse_id')  || '002fb51195e3c4697';
+let kwHist  = JSON.parse(localStorage.getItem('kw_hist') || '[]');
+let lastRes = [];
+let curUrl  = '';
+
+// Init
+window.addEventListener('DOMContentLoaded', () => {
+  setInterval(() => { document.getElementById('clock').textContent = new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'}); }, 1000);
+  document.getElementById('cse-key').value = CSE_KEY;
+  document.getElementById('cse-id').value  = CSE_ID;
+  renderChips();
+  setTimeout(loadTrends, 600);
+});
+
+// ===== TABS =====
+function goTab(name, el) {
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+}
+
+// ===== CSE API =====
+async function cseSearch(kw, dateRestrict='', start=1) {
+  let apiUrl = `https://www.googleapis.com/customsearch/v1?key=${CSE_KEY}&cx=${CSE_ID}&q=${encodeURIComponent(kw)}&gl=in&hl=hi&num=10&start=${start}`;
+  if (dateRestrict) apiUrl += `&dateRestrict=${dateRestrict}`;
+
+  // Always use allorigins proxy — works from file:// on mobile too
+  const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(apiUrl)}`;
+  
+  let lastErr = '';
+  const proxies = [
+    `https://api.allorigins.win/get?url=${encodeURIComponent(apiUrl)}`,
+    `https://corsproxy.io/?${encodeURIComponent(apiUrl)}`,
+    `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(apiUrl)}`,
+  ];
+
+  for (const px of proxies) {
+    try {
+      const r = await fetch(px, {signal: AbortSignal.timeout(10000)});
+      if (!r.ok) continue;
+      const text = await r.text();
+      let d;
+      try { d = JSON.parse(text); } catch { continue; }
+      // allorigins wraps response in {contents: "..."}
+      if (typeof d.contents === 'string') {
+        try { d = JSON.parse(d.contents); } catch { continue; }
+      }
+      if (d.error) throw new Error(d.error.message || 'Google API Error: ' + JSON.stringify(d.error));
+      if (d.searchInformation !== undefined || d.items !== undefined) return d;
+    } catch(e) {
+      lastErr = e.message;
+      if (e.message.includes('Google API Error')) throw e;
+      continue;
+    }
+  }
+  throw new Error('Sabhi proxies fail ho gaye: ' + lastErr);
+}
+
+async function fullSearch(kw, dateRestrict='') {
+  let all = [], total = 0;
+  // Fetch 3 pages = up to 30 results
+  for (let pg = 0; pg < 3; pg++) {
+    try {
+      const d = await cseSearch(kw, dateRestrict, pg*10+1);
+      if (pg === 0) total = parseInt(d.searchInformation?.totalResults || 0);
+      const items = d.items || [];
+      items.forEach(it => all.push({
+        rank: all.length+1,
+        domain: getDomain(it.link),
+        title: it.title||'',
+        url: it.link||'',
+        snippet: it.snippet||''
+      }));
+      if (items.length < 10) break;
+    } catch(e) { if (pg>0) break; throw e; }
+  }
+  return { results: all, total };
+}
+
+function getDomain(url) {
+  try { return new URL(url).hostname.replace(/^www\./,''); } catch { return url; }
+}
+
+// ===== COMPETITION =====
+function compLevel(n) {
+  if (n > 50000000) return { label:'Bahut Zyada', sub:'50L+ pages compete kar rahe hain', color:'#ff4444', icon:'fa-fire', bg:'rgba(255,68,68,.1)' };
+  if (n > 10000000) return { label:'High Competition', sub:'10L-50L pages hain is keyword pe', color:'#ff6b35', icon:'fa-arrow-trend-up', bg:'rgba(255,107,53,.1)' };
+  if (n > 1000000)  return { label:'Medium Competition', sub:'1L-10L pages — doable hai', color:'#ffd700', icon:'fa-minus', bg:'rgba(255,215,0,.1)' };
+  if (n > 100000)   return { label:'Low Competition', sub:'1K-1L pages — easy rank milega', color:'#00ff88', icon:'fa-arrow-trend-down', bg:'rgba(0,255,136,.1)' };
+  return { label:'Very Low — Easy!', sub:'Bahut kam competition — jaldi rank hoga', color:'#00ff88', icon:'fa-seedling', bg:'rgba(0,255,136,.1)' };
+}
+
+function fmtNum(n) {
+  n = parseInt(n)||0;
+  if (n>=1e9) return (n/1e9).toFixed(1)+'B';
+  if (n>=1e7) return (n/1e7).toFixed(1)+' Cr';
+  if (n>=1e5) return (n/1e5).toFixed(1)+' L';
+  if (n>=1000) return (n/1000).toFixed(0)+'K';
+  return n||'—';
+}
+
+// ===== TRENDING =====
+async function loadTrends() {
+  const el = document.getElementById('trend-list');
+  el.innerHTML = `<div style="text-align:center;padding:30px;color:var(--muted)"><div class="spin" style="margin:0 auto 10px"></div><p style="font-size:12px">Loading...</p></div>`;
+  const cat = document.getElementById('cat').value;
+  const rss = 'https://trends.google.com/trends/trendingsearches/daily/rss?geo=IN';
+  try {
+    // Try multiple proxies
+    let xmlText = null;
+    for (const proxy of [
+      `https://api.allorigins.win/get?url=${encodeURIComponent(rss)}`,
+      `https://corsproxy.io/?${encodeURIComponent(rss)}`
+    ]) {
+      try {
+        const r = await fetch(proxy, {signal: AbortSignal.timeout(6000)});
+        const d = await r.json();
+        const t = d.contents || '';
+        if (t.includes('<item>')) { xmlText = t; break; }
+      } catch(e) { continue; }
+    }
+    if (!xmlText) throw new Error('no data');
+    const xml = new DOMParser().parseFromString(xmlText, 'text/xml');
+    let items = [...xml.querySelectorAll('item')].map(it=>({
+      title: it.querySelector('title')?.textContent||'',
+      traffic: it.querySelector('approx_traffic')?.textContent||''
+    }));
+    if (cat==='edu') {
+      const eduKw=['admit','result','exam','board','neet','jee','reet','bstc','ssc','upsc','university','college','syllabus','hall ticket','answer key'];
+      const f=items.filter(t=>eduKw.some(k=>t.title.toLowerCase().includes(k)));
+      if(f.length) items=f;
+    } else if (cat==='job') {
+      const jobKw=['sarkari','naukri','recruitment','vacancy','job','bharti'];
+      const f=items.filter(t=>jobKw.some(k=>t.title.toLowerCase().includes(k)));
+      if(f.length) items=f;
+    } else if (cat==='res') {
+      const resKw=['result','merit','cutoff','cut off','list'];
+      const f=items.filter(t=>resKw.some(k=>t.title.toLowerCase().includes(k)));
+      if(f.length) items=f;
+    }
+    if (!items.length) throw new Error('none');
+    el.innerHTML = items.slice(0,20).map((t,i)=>`
+      <div class="trend-item fade" onclick="pickTrend('${esc(t.title)}')" style="animation-delay:${i*25}ms">
+        <span class="tn">${i+1}</span>
+        <span class="tt">${esc(t.title)}</span>
+        ${t.traffic?`<span class="tv">${t.traffic}</span>`:''}
+        <i class="fa-solid fa-arrow-right" style="font-size:10px;color:var(--accent)"></i>
+      </div>`).join('');
+  } catch(e) {
+    el.innerHTML = `<div class="msg msg-e"><i class="fa-solid fa-circle-xmark"></i> Live trends load nahi hue. Dobara try karo.</div>
+      <div style="text-align:center;margin-top:16px">
+        <button class="btn btn-g" onclick="loadTrends()"><i class="fa-solid fa-rotate"></i> Retry</button>
+      </div>`;
+  }
+}
+
+function pickTrend(kw) {
+  document.getElementById('qkw').value = kw;
+  // Switch to trends tab and quick check
+  quickCheck();
+}
+
+// ===== QUICK CHECK =====
+async function quickCheck() {
+  const kw = document.getElementById('qkw').value.trim();
+  if (!kw) return;
+  if (!CSE_KEY || !CSE_ID) {
+    document.getElementById('quick-res').innerHTML = `<div class="msg msg-e"><i class="fa-solid fa-key"></i> Pehle Setup tab mein API key save karo!</div>`;
+    return;
+  }
+  const qr = document.getElementById('quick-res');
+  qr.innerHTML = `<div style="text-align:center;padding:20px;color:var(--muted)"><div class="spin" style="margin:0 auto 8px"></div><p style="font-size:12px">Checking...</p></div>`;
+  addHist(kw);
+  try {
+    const {results, total} = await fullSearch(kw, 'd2');
+    const comp = compLevel(total);
+    if (!results.length) throw new Error('No results');
+    qr.innerHTML = `
+      <div class="comp-box fade" style="background:${comp.bg};border:1px solid ${comp.color}44;margin-bottom:12px;border-radius:10px;padding:12px 14px">
+        <div class="comp-num" style="color:${comp.color};font-size:22px">${fmtNum(total)}</div>
+        <div>
+          <div style="color:${comp.color};font-weight:700;font-size:13px"><i class="fa-solid ${comp.icon}"></i> ${comp.label}</div>
+          <div style="font-size:11px;color:var(--muted)">${comp.sub}</div>
+        </div>
+      </div>
+      ${results.slice(0,5).map(r=>{
+        const rc=r.rank===1?'r1':r.rank===2?'r2':r.rank===3?'r3':'ro';
+        return `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid rgba(42,42,58,.4)">
+          <span class="rank-badge ${rc}">${r.rank}</span>
+          <img src="https://www.google.com/s2/favicons?domain=${r.domain}&sz=16" style="border-radius:2px;flex-shrink:0" onerror="this.style.display='none'"/>
+          <span style="flex:1;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(r.domain)}</span>
+          <button class="btn btn-s" style="padding:4px 8px;font-size:10px;flex-shrink:0" onclick="openPreview('${esc(r.url)}','${esc(r.title)}')"><i class="fa-solid fa-eye"></i></button>
+        </div>`;
+      }).join('')}
+      <div style="margin-top:10px"><a href="#" onclick="event.preventDefault();copyToChecker('${esc(kw)}')" style="color:var(--accent);font-size:12px;text-decoration:none"><i class="fa-solid fa-arrow-right"></i> Full check karo →</a></div>`;
+  } catch(e) {
+    qr.innerHTML = `<div class="msg msg-e"><i class="fa-solid fa-circle-xmark"></i> Error: ${esc(e.message)}</div>`;
+  }
+}
+
+function copyToChecker(kw) {
+  document.getElementById('mkw').value = kw;
+  document.querySelectorAll('.tab')[1].click();
+  setTimeout(runCheck, 100);
+}
+
+// ===== FULL RANK CHECK =====
+async function runCheck() {
+  const kw = document.getElementById('mkw').value.trim();
+  if (!kw) return;
+  if (!CSE_KEY || !CSE_ID) {
+    document.getElementById('run-status').textContent = '⚠ API key setup karo!';
+    return;
+  }
+  const btn = document.getElementById('run-btn');
+  const st  = document.getElementById('run-status');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spin"></div> Checking...';
+  showProg(10);
+  st.textContent = '⟳ Google se data la raha hun...';
+  const df = document.getElementById('dfilter').value;
+  try {
+    const {results, total} = await fullSearch(kw, df);
+    showProg(100);
+    lastRes = results;
+    displayFull(kw, results, total);
+    addHist(kw);
+    st.textContent = `✓ ${results.length} results`;
+  } catch(e) {
+    st.textContent = '✗ ' + e.message;
+    document.getElementById('res-wrap').innerHTML = `<div class="card"><div class="msg msg-e"><i class="fa-solid fa-circle-xmark"></i> ${esc(e.message)}</div></div>`;
+    document.getElementById('res-wrap').style.display='block';
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-radar"></i> Run Check';
+    setTimeout(()=>hideProg(),800);
+  }
+}
+
+function displayFull(kw, results, total) {
+  document.getElementById('res-wrap').style.display = 'block';
+  document.getElementById('res-kw').textContent = '"'+kw+'"';
+  const comp = compLevel(total);
+
+  // Competition box
+  document.getElementById('comp-box').innerHTML = `
+    <div style="font-size:36px;font-weight:800;font-family:'Space Mono',monospace;color:${comp.color}">${fmtNum(total)}</div>
+    <div style="flex:1">
+      <div style="font-size:16px;font-weight:700;color:${comp.color};margin-bottom:4px">
+        <i class="fa-solid ${comp.icon}"></i> ${comp.label}
+      </div>
+      <div style="font-size:12px;color:var(--muted)">${comp.sub}</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:4px">Total competing pages Google pe: <strong style="color:var(--text)">${total.toLocaleString('en-IN')}</strong></div>
+    </div>`;
+  document.getElementById('comp-box').style = `background:${comp.bg};border:1px solid ${comp.color}44;border-radius:12px;padding:20px 24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;margin-bottom:16px;`;
+
+  // Stats
+  const top = results[0]?.domain||'—';
+  document.getElementById('stats-bar').innerHTML = `
+    <div class="stat"><div class="stat-n">${results.length}</div><div class="stat-l">Results Fetched</div></div>
+    <div class="stat"><div class="stat-n" style="color:${comp.color}">${fmtNum(total)}</div><div class="stat-l">Total Pages</div></div>
+    <div class="stat" style="flex:2"><div class="stat-n" style="font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${top}</div><div class="stat-l">#1 Rank Site</div></div>`;
+
+  renderTable(results);
+}
+
+function renderTable(res) {
+  document.getElementById('res-body').innerHTML = res.slice(0,30).map(r=>{
+    const rc=r.rank===1?'r1':r.rank===2?'r2':r.rank===3?'r3':'ro';
+    return `<tr>
+      <td><span class="rank-badge ${rc}">${r.rank}</span></td>
+      <td>
+        <div class="domain-pill" onclick="openPreview('${esc(r.url)}','${esc(r.title)}')">
+          <img src="https://www.google.com/s2/favicons?domain=${r.domain}&sz=14" onerror="this.style.display='none'" style="border-radius:2px;flex-shrink:0"/>
+          <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(r.domain)}</span>
+        </div>
+      </td>
+      <td style="max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:#c8c8d8">${esc(r.title)}</td>
+      <td><button class="btn btn-s" style="padding:5px 9px;font-size:11px" onclick="openPreview('${esc(r.url)}','${esc(r.title)}')"><i class="fa-solid fa-eye"></i></button></td>
+    </tr>`;
+  }).join('');
+}
+
+// Sort
+function doSort(dir) {
+  if (!lastRes.length) return;
+  const s = [...lastRes].sort((a,b)=>dir==='asc'?a.rank-b.rank:b.rank-a.rank);
+  renderTable(s);
+}
+
+function clearCheck() {
+  document.getElementById('mkw').value='';
+  document.getElementById('res-wrap').style.display='none';
+  document.getElementById('run-status').textContent='';
+}
+
+// ===== SETUP =====
+function saveSetup() {
+  CSE_KEY = document.getElementById('cse-key').value.trim();
+  CSE_ID  = document.getElementById('cse-id').value.trim();
+  localStorage.setItem('cse_key', CSE_KEY);
+  localStorage.setItem('cse_id',  CSE_ID);
+  const m = document.getElementById('setup-msg');
+  m.innerHTML = `<div class="msg msg-i" style="margin-top:12px"><i class="fa-solid fa-check"></i> Saved! Ab rank check karo.</div>`;
+  setTimeout(()=>m.innerHTML='', 3000);
+}
+
+// ===== KW HISTORY =====
+function addHist(kw) {
+  kwHist = [kw, ...kwHist.filter(k=>k!==kw)].slice(0,8);
+  localStorage.setItem('kw_hist', JSON.stringify(kwHist));
+  renderChips();
+}
+function renderChips() {
+  document.getElementById('kw-chips').innerHTML = kwHist.map(k=>
+    `<span class="kw-chip" onclick="document.getElementById('qkw').value='${esc(k)}'">${esc(k)}</span>`
+  ).join('');
+}
+
+// ===== PREVIEW =====
+async function openPreview(url, title) {
+  curUrl = url;
+  document.getElementById('pm-title').textContent = title||'Preview';
+  document.getElementById('pm-url').textContent = url;
+  document.getElementById('pm-body').innerHTML = `<div style="text-align:center;padding:30px;color:var(--muted)"><div class="spin" style="margin:0 auto 10px"></div><p>Loading...</p></div>`;
+  document.getElementById('pmodal').classList.add('open');
+  try {
+    const proxy = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+    const r = await fetch(proxy, {signal:AbortSignal.timeout(9000)});
+    const d = await r.json();
+    const html = d.contents;
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    doc.querySelectorAll('script,style,nav,header,footer,iframe,.ad,[class*="ad-"],[id*="ad-"]').forEach(e=>e.remove());
+    const main = doc.querySelector('article,.content,.post-content,main,#content,.entry-content,.article-body')||doc.body;
+    const clean = (main?.innerHTML||'')
+      .replace(/<script[^>]*>.*?<\/script>/gis,'')
+      .replace(/<style[^>]*>.*?<\/style>/gis,'')
+      .replace(/on\w+="[^"]*"/g,'')
+      .replace(/<a /g,'<a target="_blank" style="color:var(--accent3)" ')
+      .replace(/<img /g,'<img style="max-width:100%;border-radius:6px;margin:6px 0" ');
+    document.getElementById('pm-body').innerHTML = clean||'<p style="color:var(--muted)">Content extract nahi hua</p>';
+  } catch(e) {
+    document.getElementById('pm-body').innerHTML = `
+      <div class="msg msg-w"><i class="fa-solid fa-triangle-exclamation"></i>Direct load nahi hua</div>
+      <div style="text-align:center;margin-top:16px">
+        <button class="btn btn-g" onclick="window.open(curUrl,'_blank')"><i class="fa-solid fa-arrow-up-right-from-square"></i> Browser mein kholo</button>
+      </div>`;
+  }
+}
+function closeModal() { document.getElementById('pmodal').classList.remove('open'); }
+document.getElementById('pmodal').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeModal(); });
+
+// ===== HELPERS =====
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+function showProg(p){const pr=document.getElementById('prog');pr.style.display='block';document.getElementById('prog-f').style.width=p+'%';}
+function hideProg(){document.getElementById('prog').style.display='none';document.getElementById('prog-f').style.width='0%';}
+</script>
 </body>
 </html>
